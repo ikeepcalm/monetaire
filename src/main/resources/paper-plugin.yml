@@ -1,0 +1,6 @@
+name: Monetaire
+version: '${project.version}'
+main: dev.ua.ikeepcalm.monetaire.Monetaire
+api-version: '1.20'
+prefix: Monetaire
+load: POSTWORLD
