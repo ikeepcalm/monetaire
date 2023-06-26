@@ -30,9 +30,9 @@ public final class Monetaire extends JavaPlugin {
     public void onEnable() {
         try {
             JdbcPooledConnectionSource source = new JdbcPooledConnectionSource(
-                    "jdbc:mysql://51.83.165.198:3306/hm189815_data",
-                    "6aupaktap",
-                    "mJ6mI2uP1aaK7t");
+                    "url",
+                    "username",
+                    "password");
             playerDao = DaoManager.createDao(source, Player.class);
             minfinDao = DaoManager.createDao(source, MinFin.class);
             systemTxDao = DaoManager.createDao(source, SystemTx.class);
@@ -47,7 +47,7 @@ public final class Monetaire extends JavaPlugin {
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
-        getLogger().info("Cya! Monetaire's eager have some rest!");
+        getLogger().info("Cya! Monetaire is on his way to have some rest!");
     }
 
     @Override
@@ -58,5 +58,7 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Withdraw.class);
         CommandAPI.registerCommand(Sponsor.class);
         CommandAPI.registerCommand(Transfer.class);
+        CommandAPI.registerCommand(Payfine.class);
+        CommandAPI.registerCommand(Setfine.class);
     }
 }

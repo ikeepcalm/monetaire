@@ -27,54 +27,66 @@ public class Transfer {
             if (!sender.getName().equals(recipient.getName())){
                 if (recipient.isOnline()){
                     dev.ua.ikeepcalm.monetaire.entities.Player foundSender = playerDao.findByNickname(sender.getName());
-                    if (foundSender.getBalance() >= amount){
-                        dev.ua.ikeepcalm.monetaire.entities.Player foundRecipient = playerDao.findByNickname(recipient.getName());
-                        foundSender.setBalance(foundSender.getBalance() - amount);
-                        foundRecipient.setBalance(foundRecipient.getBalance() + amount);
-                        playerDao.save(foundSender);
-                        playerDao.save(foundRecipient);
-                        PlayerTx playerTx = new PlayerTx();
-                        playerTx.setAmount(amount);
-                        playerTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-                        playerTx.setSender(sender.getName());
-                        playerTx.setRecipient(recipient.getName());
-                        playerTx.setActionType(ActionType.TRANSFER);
-                        playerTx.setSuccessful(true);
-                        playerTxDao.save(playerTx);
+                    if (foundSender.getFine() > 0){
                         MiniMessage mm = MiniMessage.miniMessage();
                         StringBuilder sb = new StringBuilder();
                         sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви переказали <#55FFFF>").append(amount).append(" ДР<#FFFFFF> гравцю<#AAAAAA> ").append(recipient.getName()).append("\n");
-                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundSender.getBalance()).append(" ДР\n");
+                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви маєте сплатити штраф!").append("\n");
+                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Інакше ви не зможете повноцінно користуватися системою!").append("\n");
+                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума штрафів: <#55FFFF>").append(foundSender.getFine()).append(" ДР\n");
                         sb.append("<bold><#5555FF>-----------------------------------------</bold>");
                         Component parsed = mm.deserialize(sb.toString());
                         sender.sendMessage(parsed);
-
-                        MiniMessage mm1 = MiniMessage.miniMessage();
-                        StringBuilder sb1 = new StringBuilder();
-                        sb1.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-                        sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Вам було здійснено переказ на суму <#55FFFF>").append(amount).append(" ДР<#FFFFFF> гравцем<#AAAAAA> ").append(sender.getName()).append("\n");
-                        sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundRecipient.getBalance()).append(" ДР\n");
-                        sb1.append("<bold><#5555FF>-----------------------------------------</bold>");
-                        Component parsed1 = mm1.deserialize(sb1.toString());
-                        recipient.sendMessage(parsed1);
                     } else {
-                        PlayerTx playerTx = new PlayerTx();
-                        playerTx.setAmount(amount);
-                        playerTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-                        playerTx.setSender(sender.getName());
-                        playerTx.setRecipient(recipient.getName());
-                        playerTx.setSuccessful(false);
-                        playerTx.setActionType(ActionType.TRANSFER);
-                        playerTxDao.save(playerTx);
-                        MiniMessage mm = MiniMessage.miniMessage();
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-                        sb.append("<bold><#5555FF>BANK</bold> <#AAAAAA>> <#FF5555>У вас недостатньо коштів!\n");
-                        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundSender.getBalance()).append(" ДР\n");
-                        sb.append("<bold><#5555FF>-----------------------------------------</bold>");
-                        Component parsed = mm.deserialize(sb.toString());
-                        sender.sendMessage(parsed);
+                        if (foundSender.getBalance() >= amount){
+                            dev.ua.ikeepcalm.monetaire.entities.Player foundRecipient = playerDao.findByNickname(recipient.getName());
+                            foundSender.setBalance(foundSender.getBalance() - amount);
+                            foundRecipient.setBalance(foundRecipient.getBalance() + amount);
+                            playerDao.save(foundSender);
+                            playerDao.save(foundRecipient);
+                            PlayerTx playerTx = new PlayerTx();
+                            playerTx.setAmount(amount);
+                            playerTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+                            playerTx.setSender(sender.getName());
+                            playerTx.setRecipient(recipient.getName());
+                            playerTx.setActionType(ActionType.TRANSFER);
+                            playerTx.setSuccessful(true);
+                            playerTxDao.save(playerTx);
+                            MiniMessage mm = MiniMessage.miniMessage();
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви переказали <#55FFFF>").append(amount).append(" ДР<#FFFFFF> гравцю<#AAAAAA> ").append(recipient.getName()).append("\n");
+                            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundSender.getBalance()).append(" ДР\n");
+                            sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+                            Component parsed = mm.deserialize(sb.toString());
+                            sender.sendMessage(parsed);
+
+                            MiniMessage mm1 = MiniMessage.miniMessage();
+                            StringBuilder sb1 = new StringBuilder();
+                            sb1.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                            sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Вам було здійснено переказ на суму <#55FFFF>").append(amount).append(" ДР<#FFFFFF> гравцем<#AAAAAA> ").append(sender.getName()).append("\n");
+                            sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundRecipient.getBalance()).append(" ДР\n");
+                            sb1.append("<bold><#5555FF>-----------------------------------------</bold>");
+                            Component parsed1 = mm1.deserialize(sb1.toString());
+                            recipient.sendMessage(parsed1);
+                        } else {
+                            PlayerTx playerTx = new PlayerTx();
+                            playerTx.setAmount(amount);
+                            playerTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+                            playerTx.setSender(sender.getName());
+                            playerTx.setRecipient(recipient.getName());
+                            playerTx.setSuccessful(false);
+                            playerTx.setActionType(ActionType.TRANSFER);
+                            playerTxDao.save(playerTx);
+                            MiniMessage mm = MiniMessage.miniMessage();
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                            sb.append("<bold><#5555FF>BANK</bold> <#AAAAAA>> <#FF5555>У вас недостатньо коштів!\n");
+                            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundSender.getBalance()).append(" ДР\n");
+                            sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+                            Component parsed = mm.deserialize(sb.toString());
+                            sender.sendMessage(parsed);
+                        }
                     }
                 } else {
                     MiniMessage mm = MiniMessage.miniMessage();

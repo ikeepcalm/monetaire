@@ -26,41 +26,53 @@ public class Withdraw {
     public static void withdraw(Player player, @AIntegerArgument int amount) {
         if (amount> 0 && amount < 3000){
             dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player.getName());
-            if (depositPlayer.getBalance() >= amount){
-                player.getInventory().addItem(new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, amount));
-                depositPlayer.setBalance((depositPlayer.getBalance() - amount));
-                playerDao.save(depositPlayer);
-                SystemTx systemTx = new SystemTx();
-                systemTx.setActionType(ActionType.WITHDRAW);
-                systemTx.setSender(depositPlayer.getNickname());
-                systemTx.setAmount(amount);
-                systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-                systemTx.setSuccessful(true);
-                systemTxDao.save(systemTx);
+            if (depositPlayer.getFine() > 0) {
                 MiniMessage mm = MiniMessage.miniMessage();
                 StringBuilder sb = new StringBuilder();
                 sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Успішне зняття <#55FFFF>").append(amount).append(" ДР!\n");
-                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(depositPlayer.getBalance()).append(" ДР\n");
+                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви маєте сплатити штраф!").append("\n");
+                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Інакше ви не зможете повноцінно користуватися системою!").append("\n");
+                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума штрафів: <#55FFFF>").append(depositPlayer.getFine()).append(" ДР\n");
                 sb.append("<bold><#5555FF>-----------------------------------------</bold>");
                 Component parsed = mm.deserialize(sb.toString());
                 player.sendMessage(parsed);
-            }else {
-                SystemTx systemTx = new SystemTx();
-                systemTx.setActionType(ActionType.WITHDRAW);
-                systemTx.setSender(depositPlayer.getNickname());
-                systemTx.setAmount(amount);
-                systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-                systemTx.setSuccessful(false);
-                systemTxDao.save(systemTx);
-                MiniMessage mm = MiniMessage.miniMessage();
-                StringBuilder sb = new StringBuilder();
-                sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-                sb.append("<bold><#5555FF>BANK</bold> <#AAAAAA>> <#FF5555>У вас недостатньо коштів!\n");
-                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(depositPlayer.getBalance()).append(" ДР\n");
-                sb.append("<bold><#5555FF>-----------------------------------------</bold>");
-                Component parsed = mm.deserialize(sb.toString());
-                player.sendMessage(parsed);
+            } else {
+                if (depositPlayer.getBalance() >= amount){
+                    player.getInventory().addItem(new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, amount));
+                    depositPlayer.setBalance((depositPlayer.getBalance() - amount));
+                    playerDao.save(depositPlayer);
+                    SystemTx systemTx = new SystemTx();
+                    systemTx.setActionType(ActionType.WITHDRAW);
+                    systemTx.setSender(depositPlayer.getNickname());
+                    systemTx.setAmount(amount);
+                    systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+                    systemTx.setSuccessful(true);
+                    systemTxDao.save(systemTx);
+                    MiniMessage mm = MiniMessage.miniMessage();
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                    sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Успішне зняття <#55FFFF>").append(amount).append(" ДР!\n");
+                    sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(depositPlayer.getBalance()).append(" ДР\n");
+                    sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+                    Component parsed = mm.deserialize(sb.toString());
+                    player.sendMessage(parsed);
+                }else {
+                    SystemTx systemTx = new SystemTx();
+                    systemTx.setActionType(ActionType.WITHDRAW);
+                    systemTx.setSender(depositPlayer.getNickname());
+                    systemTx.setAmount(amount);
+                    systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+                    systemTx.setSuccessful(false);
+                    systemTxDao.save(systemTx);
+                    MiniMessage mm = MiniMessage.miniMessage();
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                    sb.append("<bold><#5555FF>BANK</bold> <#AAAAAA>> <#FF5555>У вас недостатньо коштів!\n");
+                    sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(depositPlayer.getBalance()).append(" ДР\n");
+                    sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+                    Component parsed = mm.deserialize(sb.toString());
+                    player.sendMessage(parsed);
+                }
             }
         } else {
             MiniMessage mm = MiniMessage.miniMessage();
