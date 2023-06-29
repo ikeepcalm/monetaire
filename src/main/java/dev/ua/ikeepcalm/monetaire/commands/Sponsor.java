@@ -38,6 +38,7 @@ public class Sponsor {
             } else {
                 if (depositPlayer.getBalance() >= amount){
                     depositPlayer.setBalance((depositPlayer.getBalance() - amount));
+                    depositPlayer.setSponsored(depositPlayer.getSponsored()+amount);
                     playerDao.save(depositPlayer);
                     SystemTx systemTx = new SystemTx();
                     systemTx.setActionType(ActionType.SPONSOR);

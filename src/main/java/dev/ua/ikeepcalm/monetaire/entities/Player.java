@@ -22,6 +22,9 @@ public class Player {
     @DatabaseField
     private Long fine;
 
+    @DatabaseField
+    private Long sponsored;
+
     public String getNickname() {
         return nickname;
     }
@@ -52,5 +55,13 @@ public class Player {
 
     public void setFine(Long fine) {
         this.fine = fine;
+    }
+
+    public Long getSponsored() {
+        return sponsored;
+    }
+
+    public void setSponsored(Long sponsored) {
+        this.sponsored = sponsored;
     }
 }
