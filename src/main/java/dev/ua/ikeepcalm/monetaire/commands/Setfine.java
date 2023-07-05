@@ -25,29 +25,39 @@ public class Setfine {
 
     @Default
     public static void setfine(Player finer, @APlayerArgument Player fined, @AIntegerArgument int amount) {
-        dev.ua.ikeepcalm.monetaire.entities.Player foundFined = playerDao.findByNickname(fined.getName());
-        foundFined.setFine(foundFined.getFine()+amount);
-        playerDao.save(foundFined);
-        SystemTx systemTx = new SystemTx();
-        systemTx.setActionType(ActionType.SETFINE);
-        systemTx.setSuccessful(true);
-        systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-        systemTx.setSender(fined.getName());
-        systemTx.setAmount(amount);
-        systemTxDao.save(systemTx);
-        MiniMessage mm = MiniMessage.miniMessage();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Ви встановили штраф <#55FFFF>").append(amount).append(" ДР <#FFFFFF>гравцю <#FFAA00>").append(fined.getName()).append("\n");
-        sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-        Component parsed = mm.deserialize(sb.toString());
-        finer.sendMessage(parsed);
-        StringBuilder sb1 = new StringBuilder();
-        sb1.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-        sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Ви отримали штраф сумою <#55FFFF>").append(amount).append(" ДР!\n");
-        sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Негайно виплатіть його, інакше ви втратите доступ до системи економіки!\n");
-        sb1.append("<bold><#5555FF>-----------------------------------------</bold>");
-        Component parsed1 = mm.deserialize(sb1.toString());
-        fined.sendMessage(parsed1);
+        if (amount > 0){
+            dev.ua.ikeepcalm.monetaire.entities.Player foundFined = playerDao.findByNickname(fined);
+            foundFined.setFine(foundFined.getFine()+amount);
+            playerDao.save(foundFined);
+            SystemTx systemTx = new SystemTx();
+            systemTx.setActionType(ActionType.SETFINE);
+            systemTx.setSuccessful(true);
+            systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+            systemTx.setSender(fined.getName());
+            systemTx.setAmount(amount);
+            systemTxDao.save(systemTx);
+            MiniMessage mm = MiniMessage.miniMessage();
+            StringBuilder sb = new StringBuilder();
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Ви встановили штраф <#55FFFF>").append(amount).append(" ДР <#FFFFFF>гравцю <#FFAA00>").append(fined.getName()).append("\n");
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            Component parsed = mm.deserialize(sb.toString());
+            finer.sendMessage(parsed);
+            StringBuilder sb1 = new StringBuilder();
+            sb1.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Ви отримали штраф сумою <#55FFFF>").append(amount).append(" ДР!\n");
+            sb1.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Негайно виплатіть його, інакше ви втратите доступ до системи економіки!\n");
+            sb1.append("<bold><#5555FF>-----------------------------------------</bold>");
+            Component parsed1 = mm.deserialize(sb1.toString());
+            fined.sendMessage(parsed1);
+        } else {
+            MiniMessage mm = MiniMessage.miniMessage();
+            StringBuilder sb = new StringBuilder();
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Штраф не може бути від'ємним! <#55FFFF>").append("\n");
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            Component parsed = mm.deserialize(sb.toString());
+            finer.sendMessage(parsed);
+        }
     }
 }

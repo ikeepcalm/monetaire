@@ -22,20 +22,28 @@ public class PlayerDao extends BaseDaoImpl<Player, Long> {
         }
     }
 
-    public Player findByNickname(String nickname){
+    public Player findByNickname(org.bukkit.entity.Player input){
         init();
         try {
-            List<Player> playerList = super.queryForEq("nickname", nickname);
+            List<Player> playerList = super.queryForEq("nickname", input.getName());
             if (playerList.size()==0){
                 Player player = new Player();
-                player.setNickname(nickname);
+                player.setNickname(input.getName());
+                player.setUuid(input.getUniqueId().toString());
                 player.setBalance(0L);
                 player.setLoan(0L);
                 player.setFine(0L);
                 create(player);
                 return player;
             } else {
-                return playerList.get(0);
+                Player player = playerList.get(0);
+                if (player.getUuid() == null){
+                    player.setUuid(input.getUniqueId().toString());
+                    save(player);
+                    return player;
+                } else {
+                   return player;
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

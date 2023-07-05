@@ -15,6 +15,7 @@ import dev.ua.ikeepcalm.monetaire.entities.MinFin;
 import dev.ua.ikeepcalm.monetaire.entities.Player;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
+import dev.ua.ikeepcalm.monetaire.listeners.LoginListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
@@ -40,6 +41,7 @@ public final class Monetaire extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } CommandAPI.onEnable();
+        getServer().getPluginManager().registerEvents(new LoginListener(), this);
         Logger.setGlobalLogLevel(Level.OFF);
         getLogger().info("Whats up? Monetaire is up to you now!");
     }

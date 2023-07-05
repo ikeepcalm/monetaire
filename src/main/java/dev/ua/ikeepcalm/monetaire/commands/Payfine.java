@@ -24,7 +24,7 @@ public class Payfine {
 
     @Default
     public static void payfine(Player player) {
-        dev.ua.ikeepcalm.monetaire.entities.Player foundFined = playerDao.findByNickname(player.getName());
+        dev.ua.ikeepcalm.monetaire.entities.Player foundFined = playerDao.findByNickname(player);
         if (foundFined.getFine() == 0){
             MiniMessage mm = MiniMessage.miniMessage();
             StringBuilder sb = new StringBuilder();

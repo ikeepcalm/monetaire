@@ -5,6 +5,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import dev.ua.ikeepcalm.monetaire.dao.PlayerDao;
 
+import java.util.UUID;
+
 @DatabaseTable(tableName = "players", daoClass = PlayerDao.class)
 public class Player {
 
@@ -13,6 +15,10 @@ public class Player {
 
     @DatabaseField(canBeNull = false, unique = true)
     private String nickname;
+
+    @DatabaseField(unique = true)
+    private String uuid;
+
     @DatabaseField
     private Long balance;
 
@@ -63,5 +69,13 @@ public class Player {
 
     public void setSponsored(Long sponsored) {
         this.sponsored = sponsored;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

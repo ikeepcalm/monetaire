@@ -27,7 +27,7 @@ public class Deposit {
     @Default
     public static void deposit(Player player, @AIntegerArgument int amount) {
         if (amount> 0 && amount < 3000){
-            dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player.getName());
+            dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player);
             if (player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND_ORE), amount)){
                 player.getInventory().removeItemAnySlot(new ItemStack(Material.DIAMOND_ORE, amount));
                 depositPlayer.setBalance((depositPlayer.getBalance() + amount));

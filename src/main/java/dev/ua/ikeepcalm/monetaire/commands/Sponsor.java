@@ -24,7 +24,7 @@ public class Sponsor {
     @Default
     public static void sponsor(Player player, @AIntegerArgument int amount){
         if (amount> 0 && amount < 25000){
-            dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player.getName());
+            dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player);
             if (depositPlayer.getFine() > 0){
                 MiniMessage mm = MiniMessage.miniMessage();
                 StringBuilder sb = new StringBuilder();

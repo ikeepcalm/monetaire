@@ -15,7 +15,7 @@ public class Balance {
 
     @Default
     public static void balance(Player player) {
-        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player.getName());
+        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
         MiniMessage mm = MiniMessage.miniMessage();
         StringBuilder sb = new StringBuilder();
         sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");

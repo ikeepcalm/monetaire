@@ -26,7 +26,7 @@ public class Transfer {
         if (amount > 0 && amount < 3000){
             if (!sender.getName().equals(recipient.getName())){
                 if (recipient.isOnline()){
-                    dev.ua.ikeepcalm.monetaire.entities.Player foundSender = playerDao.findByNickname(sender.getName());
+                    dev.ua.ikeepcalm.monetaire.entities.Player foundSender = playerDao.findByNickname(sender);
                     if (foundSender.getFine() > 0){
                         MiniMessage mm = MiniMessage.miniMessage();
                         StringBuilder sb = new StringBuilder();
@@ -39,7 +39,7 @@ public class Transfer {
                         sender.sendMessage(parsed);
                     } else {
                         if (foundSender.getBalance() >= amount){
-                            dev.ua.ikeepcalm.monetaire.entities.Player foundRecipient = playerDao.findByNickname(recipient.getName());
+                            dev.ua.ikeepcalm.monetaire.entities.Player foundRecipient = playerDao.findByNickname(recipient);
                             foundSender.setBalance(foundSender.getBalance() - amount);
                             foundRecipient.setBalance(foundRecipient.getBalance() + amount);
                             playerDao.save(foundSender);
