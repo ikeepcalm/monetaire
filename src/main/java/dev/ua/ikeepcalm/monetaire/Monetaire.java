@@ -15,6 +15,7 @@ import dev.ua.ikeepcalm.monetaire.entities.MinFin;
 import dev.ua.ikeepcalm.monetaire.entities.Player;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
+import dev.ua.ikeepcalm.monetaire.gui.MenuGUI;
 import dev.ua.ikeepcalm.monetaire.listeners.LoginListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,9 +32,9 @@ public final class Monetaire extends JavaPlugin {
     public void onEnable() {
         try {
             JdbcPooledConnectionSource source = new JdbcPooledConnectionSource(
-                    "url",
-                    "username",
-                    "password");
+                    "jdbc:mysql://51.83.165.198:3306/hm189815_data",
+                    "6aupaktap",
+                    "mJ6mI2uP1aaK7t");
             playerDao = DaoManager.createDao(source, Player.class);
             minfinDao = DaoManager.createDao(source, MinFin.class);
             systemTxDao = DaoManager.createDao(source, SystemTx.class);
@@ -56,6 +57,7 @@ public final class Monetaire extends JavaPlugin {
     public void onLoad() {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(true));
         CommandAPI.registerCommand(Balance.class);
+        CommandAPI.registerCommand(MenuGUI.class);
         CommandAPI.registerCommand(Deposit.class);
         CommandAPI.registerCommand(Withdraw.class);
         CommandAPI.registerCommand(Sponsor.class);
