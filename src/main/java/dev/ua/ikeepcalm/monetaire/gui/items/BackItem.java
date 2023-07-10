@@ -53,7 +53,6 @@ public class BackItem extends AbstractItem {
                 systemTx.setSuccessful(true);
                 systemTx.setActionType(ActionType.DEPOSIT);
                 systemTxDao.save(systemTx);
-                vaultGUI.setSavedAsItShould(true);
             } else if (!(amount == foundPlayer.getBalance())){
                 SystemTx systemTx = new SystemTx();
                 systemTx.setAmount(amount);
@@ -61,7 +60,6 @@ public class BackItem extends AbstractItem {
                 systemTx.setSuccessful(true);
                 systemTx.setActionType(ActionType.WITHDRAW);
                 systemTxDao.save(systemTx);
-                vaultGUI.setSavedAsItShould(true);
             }
             foundPlayer.setBalance((long) amount);
             playerDao.save(foundPlayer);

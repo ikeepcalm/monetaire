@@ -1,5 +1,7 @@
 package dev.ua.ikeepcalm.monetaire.gui;
 
+import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
+import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.gui.items.BackItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -19,18 +21,20 @@ import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
 import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 public class VaultGUI {
 
     ItemStack[] inventoryToRestore;
-    public boolean isSavedAsItShould;
+    ItemStack[] savedInventory;
+    VirtualInventory virtualInventory;
 
     public void openVault(Player player) {
         dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
 //
         inventoryToRestore = player.getInventory().getContents();
-        VirtualInventory virtualInventory = new VirtualInventory(21);
+        virtualInventory = new VirtualInventory(21);
         int diamondOreAmount = Math.toIntExact(foundPlayer.getBalance());
         ItemStack diamondOre = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, diamondOreAmount);
         virtualInventory.addItem(UpdateReason.SUPPRESSED, diamondOre);
@@ -41,6 +45,8 @@ public class VaultGUI {
                 if (newItem != null) {
                     if (!(newItem.getType() == Material.DIAMOND_ORE || newItem.getType() == Material.DEEPSLATE_DIAMOND_ORE)) {
                         itemPreUpdateEvent.setCancelled(true);
+                    } else {
+                        savedInventory = itemPreUpdateEvent.getInventory().getItems();
                     }
                 }
             }
@@ -68,17 +74,35 @@ public class VaultGUI {
                 .addCloseHandler(new Runnable() {
                     @Override
                     public void run() {
-                        if (!isSavedAsItShould){
-                            player.getInventory().setContents(inventoryToRestore);
+                        int amount = 0;
+                        for (ItemStack itemStack : virtualInventory.getItems()) {
+                            if (itemStack != null) {
+                                if (itemStack.getType() == Material.DEEPSLATE_DIAMOND_ORE || itemStack.getType() == Material.DIAMOND_ORE) {
+                                    amount += itemStack.getAmount();
+                                }
+                            }
                         }
+                        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
+                        if (amount > foundPlayer.getBalance()) {
+                            SystemTx systemTx = new SystemTx();
+                            systemTx.setAmount(amount);
+                            systemTx.setSender(foundPlayer.getNickname());
+                            systemTx.setSuccessful(true);
+                            systemTx.setActionType(ActionType.DEPOSIT);
+                            systemTxDao.save(systemTx);
+                        } else if (!(amount == foundPlayer.getBalance())) {
+                            SystemTx systemTx = new SystemTx();
+                            systemTx.setAmount(amount);
+                            systemTx.setSender(foundPlayer.getNickname());
+                            systemTx.setSuccessful(true);
+                            systemTx.setActionType(ActionType.WITHDRAW);
+                            systemTxDao.save(systemTx);
+                        }
+                        foundPlayer.setBalance((long) amount);
+                        playerDao.save(foundPlayer);
                     }
                 })
                 .build();
         window.open();
-    }
-
-
-    public void setSavedAsItShould(boolean b) {
-        isSavedAsItShould = b;
     }
 }
