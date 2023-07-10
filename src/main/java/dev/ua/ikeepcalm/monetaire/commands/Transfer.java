@@ -40,6 +40,16 @@ public class Transfer {
                     } else {
                         if (foundSender.getBalance() >= amount){
                             dev.ua.ikeepcalm.monetaire.entities.Player foundRecipient = playerDao.findByNickname(recipient);
+                            if ((foundRecipient.getBalance() + amount)>1344){
+                                MiniMessage mm = MiniMessage.miniMessage();
+                                StringBuilder sb = new StringBuilder();
+                                sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+                                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> У отримувача недостатньо місця у сховищі!\n");
+                                sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Ви не можете надіслати йому кошти командою\n");
+                                sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+                                Component parsed = mm.deserialize(sb.toString());
+                                sender.sendMessage(parsed);
+                            } else {
                             foundSender.setBalance(foundSender.getBalance() - amount);
                             foundRecipient.setBalance(foundRecipient.getBalance() + amount);
                             playerDao.save(foundSender);
@@ -69,6 +79,7 @@ public class Transfer {
                             sb1.append("<bold><#5555FF>-----------------------------------------</bold>");
                             Component parsed1 = mm1.deserialize(sb1.toString());
                             recipient.sendMessage(parsed1);
+                            }
                         } else {
                             PlayerTx playerTx = new PlayerTx();
                             playerTx.setAmount(amount);

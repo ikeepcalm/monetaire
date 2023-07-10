@@ -1,13 +1,7 @@
 package dev.ua.ikeepcalm.monetaire.gui;
 
 
-import dev.jorel.commandapi.annotations.Command;
-import dev.jorel.commandapi.annotations.Default;
-import dev.jorel.commandapi.annotations.Help;
-import dev.jorel.commandapi.annotations.Permission;
-import dev.ua.ikeepcalm.monetaire.gui.items.BalanceItem;
-import dev.ua.ikeepcalm.monetaire.gui.items.SettingsItem;
-import dev.ua.ikeepcalm.monetaire.gui.items.VaultItem;
+import dev.ua.ikeepcalm.monetaire.gui.items.AutoDepositItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -17,37 +11,36 @@ import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
+import xyz.xenondevs.invui.item.impl.CommandItem;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-@Command("bank")
-@Permission("monetaire.gui")
-@Help("Використання: /bank")
-public class MenuGUI {
+import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 
-    @Default
-    public static void openMenu(Player player) {
-        TextComponent creatorComponent = Component.text("Автор: ikeepcalm").color(TextColor.color(255, 8, 131));
+public class SettingsGUI {
+
+    public void openSettings(Player player) {
+        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
+        TextComponent comingSoonComponent = Component.text("Скоро...").color(TextColor.color(255, 8, 131));
+        TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));
+        Item autodeposit = new AutoDepositItem(foundPlayer.getAutoDeposit());
+        Item comingSoon = new SimpleItem(new ItemBuilder(Material.WHITE_DYE).setDisplayName(new AdventureComponentWrapper(comingSoonComponent)));
         Item filler = new SimpleItem(new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE));
-        Item balance = new BalanceItem();
-        Item vault = new VaultItem();
-        Item creator = new SimpleItem(new ItemBuilder(Material.PAPER).setDisplayName(new AdventureComponentWrapper(creatorComponent)));
-        Item settings = new SettingsItem();
+        Item back = new CommandItem(new ItemBuilder(Material.NETHER_STAR).setDisplayName(new AdventureComponentWrapper(backComponent)), "/bank");
         Gui gui = Gui.normal()
                 .setStructure(
                         "@ @ @ @ @ @ @ @ @",
                         "@ . . . . . . . @",
-                        "@ . . b . v . . @",
-                        "@ s . . . . . s @",
-                        "@ @ @ @ c @ @ @ @")
+                        "@ . a . c . c . @",
+                        "@ . . . . . . . @",
+                        "@ @ @ @ b @ @ @ @")
                 .addIngredient('@', border)
                 .addIngredient('.', filler)
-                .addIngredient('b', balance)
-                .addIngredient('v', vault)
-                .addIngredient('s', settings)
-                .addIngredient('c', creator)
+                .addIngredient('b', back)
+                .addIngredient('a', autodeposit)
+                .addIngredient('c', comingSoon)
                 .build();
         Window window = Window.single()
                 .setViewer(player)

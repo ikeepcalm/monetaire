@@ -1,5 +1,8 @@
 package dev.ua.ikeepcalm.monetaire.gui.items;
 
+import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
+import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
+import dev.ua.ikeepcalm.monetaire.gui.VaultGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -15,8 +18,15 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
 
 import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 public class BackItem extends AbstractItem {
+
+    VaultGUI vaultGUI;
+
+    public BackItem(VaultGUI vaultGUI) {
+        this.vaultGUI = vaultGUI;
+    }
 
     @Override
     public ItemProvider getItemProvider() {
@@ -36,6 +46,23 @@ public class BackItem extends AbstractItem {
                 }
             }
             dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
+            if (amount > foundPlayer.getBalance()){
+                SystemTx systemTx = new SystemTx();
+                systemTx.setAmount(amount);
+                systemTx.setSender(foundPlayer.getNickname());
+                systemTx.setSuccessful(true);
+                systemTx.setActionType(ActionType.DEPOSIT);
+                systemTxDao.save(systemTx);
+                vaultGUI.setSavedAsItShould(true);
+            } else if (!(amount == foundPlayer.getBalance())){
+                SystemTx systemTx = new SystemTx();
+                systemTx.setAmount(amount);
+                systemTx.setSender(foundPlayer.getNickname());
+                systemTx.setSuccessful(true);
+                systemTx.setActionType(ActionType.WITHDRAW);
+                systemTxDao.save(systemTx);
+                vaultGUI.setSavedAsItShould(true);
+            }
             foundPlayer.setBalance((long) amount);
             playerDao.save(foundPlayer);
             player.performCommand("bank");

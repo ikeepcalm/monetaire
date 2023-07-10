@@ -1,11 +1,8 @@
 package dev.ua.ikeepcalm.monetaire.entities;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import dev.ua.ikeepcalm.monetaire.dao.PlayerDao;
-
-import java.util.UUID;
 
 @DatabaseTable(tableName = "players", daoClass = PlayerDao.class)
 public class Player {
@@ -28,8 +25,11 @@ public class Player {
     @DatabaseField
     private Long fine;
 
-    @DatabaseField
+    @DatabaseField(defaultValue = "0")
     private Long sponsored;
+
+    @DatabaseField(defaultValue = "false")
+    private boolean autoDeposit;
 
     public String getNickname() {
         return nickname;
@@ -77,5 +77,13 @@ public class Player {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean getAutoDeposit() {
+        return autoDeposit;
+    }
+
+    public void setAutoDeposit(boolean autoDeposit) {
+        this.autoDeposit = autoDeposit;
     }
 }

@@ -16,9 +16,11 @@ import dev.ua.ikeepcalm.monetaire.entities.Player;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.gui.MenuGUI;
+import dev.ua.ikeepcalm.monetaire.listeners.BlockListener;
 import dev.ua.ikeepcalm.monetaire.listeners.LoginListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.SQLException;
 
 public final class Monetaire extends JavaPlugin {
@@ -27,14 +29,18 @@ public final class Monetaire extends JavaPlugin {
     public static MinfinDao minfinDao;
     public static SystemTxDao systemTxDao;
     public static PlayerTxDao playerTxDao;
+    private final String folderDir = getDataFolder() + "";
+    public File configFile = new File(this.folderDir + File.separator + "config.yml");
 
     @Override
     public void onEnable() {
-        try {
+        if (!configFile.exists()){
+            saveDefaultConfig();
+        } try {
             JdbcPooledConnectionSource source = new JdbcPooledConnectionSource(
-                    "jdbc:mysql://51.83.165.198:3306/hm189815_data",
-                    "6aupaktap",
-                    "mJ6mI2uP1aaK7t");
+                    getConfig().getString("db_url"),
+                    getConfig().getString("db_user"),
+                    getConfig().getString("db_password"));
             playerDao = DaoManager.createDao(source, Player.class);
             minfinDao = DaoManager.createDao(source, MinFin.class);
             systemTxDao = DaoManager.createDao(source, SystemTx.class);
@@ -43,6 +49,7 @@ public final class Monetaire extends JavaPlugin {
             throw new RuntimeException(e);
         } CommandAPI.onEnable();
         getServer().getPluginManager().registerEvents(new LoginListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockListener(), this);
         Logger.setGlobalLogLevel(Level.OFF);
         getLogger().info("Whats up? Monetaire is up to you now!");
     }

@@ -22,7 +22,7 @@ public class BalanceGUI {
         TextComponent fineComponent = Component.text("Сума штрафів: " + foundPlayer.getFine() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent loanComponent = Component.text("Заборгованість: " + foundPlayer.getLoan() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent sponsoredComponent = Component.text("Проспонсовано: " + foundPlayer.getSponsored() + " ДР").color(TextColor.color(255, 8, 131));
-        TextComponent backComponent = Component.text("Назад").color(TextColor.color(255, 8, 131));
+        TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));
         TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
 
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));

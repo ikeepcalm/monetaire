@@ -5,6 +5,7 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
+import dev.ua.ikeepcalm.monetaire.entities.MinFin;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import net.kyori.adventure.text.Component;
@@ -14,8 +15,7 @@ import org.bukkit.entity.Player;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
-import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.*;
 
 @Command("payfine")
 @Permission("monetaire.payfine")
@@ -37,6 +37,9 @@ public class Payfine {
             if (foundFined.getBalance()>=foundFined.getFine()){
                 foundFined.setBalance(foundFined.getBalance()- foundFined.getFine());
                 foundFined.setFine(0L);
+                MinFin minFin = minfinDao.getMinfin();
+                minFin.setBalance(minFin.getBalance()+ foundFined.getFine());
+                minfinDao.save(minFin);
                 SystemTx systemTx = new SystemTx();
                 systemTx.setActionType(ActionType.PAYFINE);
                 systemTx.setSuccessful(true);

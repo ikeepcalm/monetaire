@@ -22,10 +22,14 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 
 public class VaultGUI {
 
+    ItemStack[] inventoryToRestore;
+    public boolean isSavedAsItShould;
+
     public void openVault(Player player) {
         dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
 //
+        inventoryToRestore = player.getInventory().getContents();
         VirtualInventory virtualInventory = new VirtualInventory(21);
         int diamondOreAmount = Math.toIntExact(foundPlayer.getBalance());
         ItemStack diamondOre = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, diamondOreAmount);
@@ -44,7 +48,7 @@ public class VaultGUI {
 //
 
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));
-        Item back = new BackItem();
+        Item back = new BackItem(this);
 
         Gui gui = Gui.normal()
                 .setStructure(
@@ -61,8 +65,20 @@ public class VaultGUI {
                 .setViewer(player)
                 .setGui(gui)
                 .setTitle(new AdventureComponentWrapper(windowComponent))
+                .addCloseHandler(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!isSavedAsItShould){
+                            player.getInventory().setContents(inventoryToRestore);
+                        }
+                    }
+                })
                 .build();
         window.open();
     }
 
+
+    public void setSavedAsItShould(boolean b) {
+        isSavedAsItShould = b;
+    }
 }
