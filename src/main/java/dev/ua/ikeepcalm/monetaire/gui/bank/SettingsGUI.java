@@ -1,7 +1,7 @@
-package dev.ua.ikeepcalm.monetaire.gui;
+package dev.ua.ikeepcalm.monetaire.gui.bank;
 
 
-import dev.ua.ikeepcalm.monetaire.gui.items.AutoDepositItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.items.AutoDepositItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;

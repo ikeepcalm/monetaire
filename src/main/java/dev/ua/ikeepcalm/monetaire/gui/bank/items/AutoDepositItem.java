@@ -1,6 +1,6 @@
-package dev.ua.ikeepcalm.monetaire.gui.items;
+package dev.ua.ikeepcalm.monetaire.gui.bank.items;
 
-import dev.ua.ikeepcalm.monetaire.gui.SettingsGUI;
+import dev.ua.ikeepcalm.monetaire.gui.bank.SettingsGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -29,7 +29,7 @@ public class AutoDepositItem extends AbstractItem {
     public ItemProvider getItemProvider() {
         if (isEnabled){
             TextComponent autoDepositName = Component.text("Авто-поповнення").color(TextColor.color(8, 255, 131));
-            TextComponent autoDepositLore1 = Component.text("Автоматично переносить здобуты Діри у Сховище").color(TextColor.color(230, 200, 230));
+            TextComponent autoDepositLore1 = Component.text("Автоматично переносить здобуті Діри у Сховище").color(TextColor.color(230, 200, 230));
             TextComponent autoDepositLore2 = Component.text("Для використання необхідне кайло із Шовковим дотиком").color(TextColor.color(230, 200, 230));
             return new ItemBuilder(Material.GREEN_DYE)
                     .setDisplayName(new AdventureComponentWrapper(autoDepositName))
@@ -37,7 +37,7 @@ public class AutoDepositItem extends AbstractItem {
                     .addLoreLines(new AdventureComponentWrapper(autoDepositLore2));
         } else {
             TextComponent autoDepositName = Component.text("Авто-поповнення").color(TextColor.color(255, 8, 131));
-            TextComponent autoDepositLore1 = Component.text("Автоматично переносить здобуты Діри у Сховище").color(TextColor.color(230, 200, 230));
+            TextComponent autoDepositLore1 = Component.text("Автоматично переносить здобуті Діри у Сховище").color(TextColor.color(230, 200, 230));
             TextComponent autoDepositLore2 = Component.text("Для використання необхідне кайло із Шовковим дотиком").color(TextColor.color(230, 200, 230));
             return new ItemBuilder(Material.RED_DYE)
                     .setDisplayName(new AdventureComponentWrapper(autoDepositName))

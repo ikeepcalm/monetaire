@@ -1,13 +1,13 @@
-package dev.ua.ikeepcalm.monetaire.gui;
+package dev.ua.ikeepcalm.monetaire.gui.bank;
 
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
-import dev.ua.ikeepcalm.monetaire.gui.items.BalanceItem;
-import dev.ua.ikeepcalm.monetaire.gui.items.SettingsItem;
-import dev.ua.ikeepcalm.monetaire.gui.items.VaultItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.items.BalanceItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.items.SettingsItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.items.VaultItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;

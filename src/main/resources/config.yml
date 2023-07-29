@@ -1,3 +1,38 @@
-db_url: #url
-db_user: #username
-db_password: #password
+# -----------------------------
+#       M O N E T A I R E
+# -----------------------------
+# Made by ikeepcalm for UAPROJECT
+# -----------------------------
+
+# Things related to Data Storage
+# For now only DataBase (MariaDB)
+db_url:
+db_user:
+db_password:
+
+# Prices for the Phantom Shop
+# Different values, in range of int max and min values
+building_block: 5 # x64
+decoration_block: 10 # x64
+tree_sapling: 1 # x16
+ore: 5 # x8
+ancient_debris: 5 # x1
+raw_ore_block: 10 # x4
+ore_block: 15 # x4
+slab: 2 # x64
+wall: 2 # x64
+carpet: 2 # x64
+log: 15 # x64
+sponge: 10 # x16
+flower: 5 # x16
+bookshelf: 5 # x16
+beacon: 8 # x1
+light: 15 # x4
+shulker: 10 # x2
+fan: 5 # x16
+head: 14 # x1
+nether_star: 14 #x1
+firework: 10 # x64
+template: 8 # x2
+elytra: 32 # x1
+music_disc: 8 # x1

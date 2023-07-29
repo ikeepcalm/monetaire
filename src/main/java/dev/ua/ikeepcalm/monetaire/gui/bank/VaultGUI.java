@@ -1,8 +1,8 @@
-package dev.ua.ikeepcalm.monetaire.gui;
+package dev.ua.ikeepcalm.monetaire.gui.bank;
 
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
-import dev.ua.ikeepcalm.monetaire.gui.items.BackItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.items.BackItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;

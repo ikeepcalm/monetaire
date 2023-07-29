@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.gui;
+package dev.ua.ikeepcalm.monetaire.gui.bank;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
