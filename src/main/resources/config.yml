@@ -10,29 +10,49 @@ db_url:
 db_user:
 db_password:
 
-# Prices for the Phantom Shop
+# Prices for the Phantom Shop items
 # Different values, in range of int max and min values
-building_block: 5 # x64
-decoration_block: 10 # x64
-tree_sapling: 1 # x16
-ore: 5 # x8
-ancient_debris: 5 # x1
-raw_ore_block: 10 # x4
-ore_block: 15 # x4
-slab: 2 # x64
-wall: 2 # x64
-carpet: 2 # x64
-log: 15 # x64
-sponge: 10 # x16
-flower: 5 # x16
-bookshelf: 5 # x16
-beacon: 8 # x1
-light: 15 # x4
-shulker: 10 # x2
-fan: 5 # x16
-head: 14 # x1
-nether_star: 14 #x1
-firework: 10 # x64
-template: 8 # x2
-elytra: 32 # x1
-music_disc: 8 # x1
+building_block: 5
+decoration_block: 5
+tree_sapling: 1
+slab: 2
+wall: 2
+carpet: 2
+log: 15
+sponge: 10
+flower: 5
+bookshelf: 5
+beacon: 8
+light: 15
+shulker: 10
+fan: 5
+head: 14
+nether_star: 14
+firework: 10
+template: 8
+elytra: 32
+music_disc: 8
+
+# Quantity for each type of item
+# Different values, in range of 1-64
+q_building_block: 64
+q_decoration_block: 32
+q_tree_sapling: 16
+q_ore_block: 4
+q_slab: 64
+q_wall: 64
+q_carpet: 64
+q_log: 64
+q_sponge: 16
+q_flower: 16
+q_bookshelf: 16
+q_beacon: 1
+q_light: 4
+q_shulker: 2
+q_fan: 6
+q_head: 1
+q_nether_star: 1
+q_firework: 64
+q_template: x2
+q_elytra: 1
+q_music_disc: x1

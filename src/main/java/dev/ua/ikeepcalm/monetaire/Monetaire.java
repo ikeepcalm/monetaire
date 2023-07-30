@@ -16,6 +16,7 @@ import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.gui.bank.MenuGUI;
 import dev.ua.ikeepcalm.monetaire.gui.shop.ShopGUI;
 import dev.ua.ikeepcalm.monetaire.listeners.BlockListener;
+import dev.ua.ikeepcalm.monetaire.listeners.ItemListener;
 import dev.ua.ikeepcalm.monetaire.listeners.LoginListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +30,7 @@ public final class Monetaire extends JavaPlugin {
     public static SystemTxDao systemTxDao;
     public static PlayerTxDao playerTxDao;
     public static AdvertiserDao advertiserDao;
-    private final String folderDir = getDataFolder() + "";
+
     public File configFile = new File(getDataFolder() + File.separator + "config.yml");
 
     @Override
@@ -52,6 +53,7 @@ public final class Monetaire extends JavaPlugin {
         } CommandAPI.onEnable();
         getServer().getPluginManager().registerEvents(new LoginListener(), this);
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemListener(), this);
         Logger.setGlobalLogLevel(Level.OFF);
         getLogger().info("Whats up? Monetaire is up to you now!");
     }
