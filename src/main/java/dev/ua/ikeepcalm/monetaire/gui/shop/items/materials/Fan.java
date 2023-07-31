@@ -3,7 +3,6 @@ package dev.ua.ikeepcalm.monetaire.gui.shop.items.materials;
 import dev.ua.ikeepcalm.monetaire.Configuration;
 import dev.ua.ikeepcalm.monetaire.entities.Advertiser;
 import dev.ua.ikeepcalm.monetaire.gui.shop.ShopGUI;
-import dev.ua.ikeepcalm.monetaire.gui.shop.utils.WatermarkUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -65,7 +64,6 @@ public class Fan extends AbstractItem {
                     Material material = getItemProvider().get().getType();
                     int quantity = getItemProvider().get().getAmount();
                     ItemStack itemStack = new ItemStack(material,quantity);
-                    WatermarkUtil.addWatermark(itemStack);
                     player.getInventory().addItem(itemStack);
                     advertiser.setBalance(advertiser.getBalance() - price);
                     advertiserDao.save(advertiser);
