@@ -55,13 +55,13 @@ public final class Monetaire extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
         Logger.setGlobalLogLevel(Level.OFF);
-        getLogger().info("Whats up? Monetaire is up to you now!");
+        getLogger().info("Successfully launched Monetaire (UAPROJECT SPEC.)");
     }
 
     @Override
     public void onDisable() {
         CommandAPI.onDisable();
-        getLogger().info("Cya! Monetaire is on his way to have some rest!");
+        getLogger().info("Successfully shut down Monetaire (UAPROJECT SPEC.)");
     }
 
     @Override
@@ -76,6 +76,7 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Transfer.class);
         CommandAPI.registerCommand(Payfine.class);
         CommandAPI.registerCommand(Setfine.class);
+        CommandAPI.registerCommand(Setcredit.class);
         CommandAPI.registerCommand(ShopGUI.class);
     }
 }

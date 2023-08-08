@@ -33,6 +33,7 @@ public class PlayerDao extends BaseDaoImpl<Player, Long> {
                 player.setBalance(0L);
                 player.setLoan(0L);
                 player.setFine(0L);
+                player.setOnlineb(0L);
                 create(player);
                 return player;
             } else {

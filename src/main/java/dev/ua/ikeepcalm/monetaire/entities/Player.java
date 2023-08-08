@@ -20,6 +20,9 @@ public class Player {
     private Long balance;
 
     @DatabaseField
+    private Long onlineb;
+
+    @DatabaseField
     private Long loan;
 
     @DatabaseField
@@ -85,5 +88,13 @@ public class Player {
 
     public void setAutoDeposit(boolean autoDeposit) {
         this.autoDeposit = autoDeposit;
+    }
+
+    public Long getOnlineb() {
+        return onlineb;
+    }
+
+    public void setOnlineb(Long onlineb) {
+        this.onlineb = onlineb;
     }
 }
