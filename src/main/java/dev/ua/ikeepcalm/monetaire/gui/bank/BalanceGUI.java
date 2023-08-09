@@ -18,8 +18,8 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 public class BalanceGUI {
     public void openBalance(Player player) {
         dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
-        TextComponent balanceComponent = Component.text("Актуальний рахунок: " + foundPlayer.getBalance() + " ДР").color(TextColor.color(255, 8, 131));
-        TextComponent fineComponent = Component.text("Сума штрафів: " + foundPlayer.getFine() + " ДР").color(TextColor.color(255, 8, 131));
+        TextComponent balanceComponent = Component.text("Рахунок: " + foundPlayer.getBalance() + " ДР").color(TextColor.color(255, 8, 131));
+        TextComponent fineComponent = Component.text("Дійсні штрафи: " + foundPlayer.getFine() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent loanComponent = Component.text("Заборгованість: " + foundPlayer.getLoan() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent sponsoredComponent = Component.text("Проспонсовано: " + foundPlayer.getSponsored() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));

@@ -21,9 +21,9 @@ public class Balance {
         sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
         sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Інформація о рахунках \n");
         sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Актуальний рахунок: <#55FFFF>").append(foundPlayer.getBalance()).append(" ДР \n");
+        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Рахунок: <#55FFFF>").append(foundPlayer.getBalance()).append(" ДР \n");
         sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Заборгованність: <#55FFFF>").append(foundPlayer.getLoan()).append(" ДР \n");
-        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума штрафів: <#55FFFF>").append(foundPlayer.getFine()).append(" ДР \n");
+        sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Дійсні штрафи: <#55FFFF>").append(foundPlayer.getFine()).append(" ДР \n");
         sb.append("<bold><#5555FF>-----------------------------------------</bold>");
         Component parsed = mm.deserialize(sb.toString());
         player.sendMessage(parsed);

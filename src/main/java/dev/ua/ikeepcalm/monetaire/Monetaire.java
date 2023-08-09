@@ -77,6 +77,7 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Payfine.class);
         CommandAPI.registerCommand(Setfine.class);
         CommandAPI.registerCommand(Setcredit.class);
+        CommandAPI.registerCommand(Paycredit.class);
         CommandAPI.registerCommand(ShopGUI.class);
     }
 }
