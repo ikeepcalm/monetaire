@@ -57,10 +57,7 @@ public class Setcredit {
                     foundCredited.setBalance(1344L);
                     int exceededAmount = (int) (foundCredited.getBalance() + amount - 1344);
                     ItemStack itemStack = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, exceededAmount);
-                    System.out.println("dropping");
                     credited.getWorld().dropItemNaturally(credited.getLocation().add(0,1,0), itemStack);
-                    System.out.println(credited.getWorld());
-                    System.out.println(credited.getLocation());
                     credited.getWorld().spawnParticle(Particle.BUBBLE_POP, credited.getLocation(), 20);
                 }
 
