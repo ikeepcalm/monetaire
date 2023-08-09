@@ -24,6 +24,18 @@ public class LoginListener implements Listener {
             sb.append("<bold><#5555FF>-----------------------------------------</bold>");
             Component parsed = mm.deserialize(sb.toString());
             player.sendMessage(parsed);
+        } else if (depositPlayer.getLoan()>0){
+            MiniMessage mm = MiniMessage.miniMessage();
+            StringBuilder sb = new StringBuilder();
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
+            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви маєте певну заборгованість!").append("\n");
+            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Щоб позбутися і виплатити її - /paycredit").append("\n");
+            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума боргу: <#55FFFF>").append(depositPlayer.getLoan()).append(" ДР\n");
+            sb.append("<bold><#5555FF>-----------------------------------------</bold>");
+            Component parsed = mm.deserialize(sb.toString());
+            player.sendMessage(parsed);
         }
+
+
     }
 }

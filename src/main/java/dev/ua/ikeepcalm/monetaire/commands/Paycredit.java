@@ -35,11 +35,13 @@ public class Paycredit {
             player.sendMessage(parsed);
         } else {
             if (foundFined.getBalance()>=foundFined.getLoan()){
-                foundFined.setBalance(foundFined.getBalance()- foundFined.getLoan());
-                foundFined.setLoan(0L);
                 MinFin minFin = minfinDao.getMinfin();
-                minFin.setBalance(minFin.getBalance()+ foundFined.getFine());
+                minFin.setBalance(minFin.getBalance() + foundFined.getLoan());
+                minFin.setWaitCredits(minFin.getWaitCredits() - foundFined.getLoan());
+                foundFined.setBalance(foundFined.getBalance() - foundFined.getLoan());
+                foundFined.setLoan(0L);
                 minfinDao.save(minFin);
+                playerDao.save(foundFined);
                 SystemTx systemTx = new SystemTx();
                 systemTx.setActionType(ActionType.PAYCREDIT);
                 systemTx.setSuccessful(true);
@@ -47,7 +49,6 @@ public class Paycredit {
                 systemTx.setSender(player.getName());
                 systemTx.setAmount(Math.toIntExact(foundFined.getFine()));
                 systemTxDao.save(systemTx);
-                playerDao.save(foundFined);
                 MiniMessage mm = MiniMessage.miniMessage();
                 StringBuilder sb = new StringBuilder();
                 sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
