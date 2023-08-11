@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank;
 
+import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.gui.bank.items.BackItem;
@@ -30,12 +31,12 @@ public class VaultGUI {
     VirtualInventory virtualInventory;
 
     public void openVault(Player player) {
-        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
+        User foundUser = playerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
 //
         inventoryToRestore = player.getInventory().getContents();
         virtualInventory = new VirtualInventory(21);
-        int diamondOreAmount = Math.toIntExact(foundPlayer.getBalance());
+        int diamondOreAmount = Math.toIntExact(foundUser.getCard().getBalance());
         ItemStack diamondOre = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, diamondOreAmount);
         virtualInventory.addItem(UpdateReason.SUPPRESSED, diamondOre);
         virtualInventory.setPreUpdateHandler(new Consumer<ItemPreUpdateEvent>() {
@@ -82,24 +83,24 @@ public class VaultGUI {
                                 }
                             }
                         }
-                        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
-                        if (amount > foundPlayer.getBalance()) {
+                        User foundUser = playerDao.findByNickname(player);
+                        if (amount > foundUser.getCard().getBalance()) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundPlayer.getNickname());
+                            systemTx.setSender(foundUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.DEPOSIT);
                             systemTxDao.save(systemTx);
-                        } else if (!(amount == foundPlayer.getBalance())) {
+                        } else if (!(amount == foundUser.getCard().getBalance())) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundPlayer.getNickname());
+                            systemTx.setSender(foundUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.WITHDRAW);
                             systemTxDao.save(systemTx);
                         }
-                        foundPlayer.setBalance((long) amount);
-                        playerDao.save(foundPlayer);
+                        foundUser.getCard().setBalance((long) amount);
+                        playerDao.save(foundUser);
                     }
                 })
                 .build();

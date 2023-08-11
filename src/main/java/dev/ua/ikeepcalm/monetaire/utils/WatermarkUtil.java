@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.gui.shop.utils;
+package dev.ua.ikeepcalm.monetaire.utils;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

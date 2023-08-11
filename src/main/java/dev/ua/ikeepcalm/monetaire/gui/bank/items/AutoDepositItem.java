@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.items;
 
+import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.gui.bank.SettingsGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -50,9 +51,9 @@ public class AutoDepositItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         if (clickType.isRightClick() || clickType.isLeftClick()) {
             if (player.hasPermission("monetaire.autodeposit")){
-                dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
-                foundPlayer.setAutoDeposit(!isEnabled);
-                playerDao.save(foundPlayer);
+                User foundUser = playerDao.findByNickname(player);
+                foundUser.setAutoDeposit(!isEnabled);
+                playerDao.save(foundUser);
                 new SettingsGUI().openSettings(player);
             } else {
                 MiniMessage mm = MiniMessage.miniMessage();

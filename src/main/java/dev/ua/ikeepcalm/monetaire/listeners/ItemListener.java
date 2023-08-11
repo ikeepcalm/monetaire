@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static dev.ua.ikeepcalm.monetaire.gui.shop.utils.WatermarkUtil.hasWatermark;
+import static dev.ua.ikeepcalm.monetaire.utils.WatermarkUtil.hasWatermark;
 
 public class ItemListener implements Listener {
 

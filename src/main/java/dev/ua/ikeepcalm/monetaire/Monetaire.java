@@ -6,11 +6,14 @@ import com.j256.ormlite.logger.Level;
 import com.j256.ormlite.logger.Logger;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import dev.ua.ikeepcalm.monetaire.commands.*;
+import dev.ua.ikeepcalm.monetaire.commands.forminfin.Setcredit;
+import dev.ua.ikeepcalm.monetaire.commands.forminfin.Setfine;
+import dev.ua.ikeepcalm.monetaire.commands.forusers.*;
 import dev.ua.ikeepcalm.monetaire.dao.*;
 import dev.ua.ikeepcalm.monetaire.entities.Advertiser;
+import dev.ua.ikeepcalm.monetaire.entities.Card;
 import dev.ua.ikeepcalm.monetaire.entities.MinFin;
-import dev.ua.ikeepcalm.monetaire.entities.Player;
+import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.gui.bank.MenuGUI;
@@ -30,6 +33,7 @@ public final class Monetaire extends JavaPlugin {
     public static SystemTxDao systemTxDao;
     public static PlayerTxDao playerTxDao;
     public static AdvertiserDao advertiserDao;
+    public static CardDao cardDao;
 
     public File configFile = new File(getDataFolder() + File.separator + "config.yml");
 
@@ -42,11 +46,12 @@ public final class Monetaire extends JavaPlugin {
                     getConfig().getString("db_url"),
                     getConfig().getString("db_user"),
                     getConfig().getString("db_password"));
-            playerDao = DaoManager.createDao(source, Player.class);
+            playerDao = DaoManager.createDao(source, User.class);
             minfinDao = DaoManager.createDao(source, MinFin.class);
             systemTxDao = DaoManager.createDao(source, SystemTx.class);
             playerTxDao = DaoManager.createDao(source, PlayerTx.class);
             advertiserDao = DaoManager.createDao(source, Advertiser.class);
+            cardDao = DaoManager.createDao(source, Card.class);
             Configuration.configuration = getConfig();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -79,5 +84,6 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Setcredit.class);
         CommandAPI.registerCommand(Paycredit.class);
         CommandAPI.registerCommand(ShopGUI.class);
+        CommandAPI.registerCommand(CardIssue.class);
     }
 }

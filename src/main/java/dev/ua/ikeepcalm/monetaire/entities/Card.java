@@ -2,19 +2,20 @@ package dev.ua.ikeepcalm.monetaire.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import dev.ua.ikeepcalm.monetaire.dao.PlayerDao;
+import dev.ua.ikeepcalm.monetaire.dao.CardDao;
 
-@DatabaseTable(tableName = "players", daoClass = PlayerDao.class)
-public class Player {
+@DatabaseTable(tableName = "cards", daoClass = CardDao.class)
+public class Card {
+
 
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(canBeNull = false, unique = true)
-    private String nickname;
+    @DatabaseField
+    private String number;
 
-    @DatabaseField(unique = true)
-    private String uuid;
+    @DatabaseField
+    private int cvv;
 
     @DatabaseField
     private Long balance;
@@ -31,15 +32,32 @@ public class Player {
     @DatabaseField(defaultValue = "0")
     private Long sponsored;
 
-    @DatabaseField(defaultValue = "false")
-    private boolean autoDeposit;
 
-    public String getNickname() {
-        return nickname;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true)
+    private User holder;
+
+    public String getNumber() {
+        return number;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public int getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(int cvv) {
+        this.cvv = cvv;
+    }
+
+    public User getHolder() {
+        return holder;
+    }
+
+    public void setHolder(User holder) {
+        this.holder = holder;
     }
 
     public Long getBalance() {
@@ -48,6 +66,14 @@ public class Player {
 
     public void setBalance(Long balance) {
         this.balance = balance;
+    }
+
+    public Long getOnlineb() {
+        return onlineb;
+    }
+
+    public void setOnlineb(Long onlineb) {
+        this.onlineb = onlineb;
     }
 
     public Long getLoan() {
@@ -72,29 +98,5 @@ public class Player {
 
     public void setSponsored(Long sponsored) {
         this.sponsored = sponsored;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public boolean getAutoDeposit() {
-        return autoDeposit;
-    }
-
-    public void setAutoDeposit(boolean autoDeposit) {
-        this.autoDeposit = autoDeposit;
-    }
-
-    public Long getOnlineb() {
-        return onlineb;
-    }
-
-    public void setOnlineb(Long onlineb) {
-        this.onlineb = onlineb;
     }
 }

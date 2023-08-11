@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.items;
 
+import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.gui.bank.VaultGUI;
@@ -45,24 +46,24 @@ public class BackItem extends AbstractItem {
                     }
                 }
             }
-            dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
-            if (amount > foundPlayer.getBalance()){
+            User foundUser = playerDao.findByNickname(player);
+            if (amount > foundUser.getCard().getBalance()){
                 SystemTx systemTx = new SystemTx();
                 systemTx.setAmount(amount);
-                systemTx.setSender(foundPlayer.getNickname());
+                systemTx.setSender(foundUser.getNickname());
                 systemTx.setSuccessful(true);
                 systemTx.setActionType(ActionType.DEPOSIT);
                 systemTxDao.save(systemTx);
-            } else if (!(amount == foundPlayer.getBalance())){
+            } else if (!(amount == foundUser.getCard().getBalance())){
                 SystemTx systemTx = new SystemTx();
                 systemTx.setAmount(amount);
-                systemTx.setSender(foundPlayer.getNickname());
+                systemTx.setSender(foundUser.getNickname());
                 systemTx.setSuccessful(true);
                 systemTx.setActionType(ActionType.WITHDRAW);
                 systemTxDao.save(systemTx);
             }
-            foundPlayer.setBalance((long) amount);
-            playerDao.save(foundPlayer);
+            foundUser.getCard().setBalance((long) amount);
+            playerDao.save(foundUser);
             player.performCommand("bank");
         }
     }

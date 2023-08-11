@@ -1,5 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.listeners;
 
+import dev.ua.ikeepcalm.monetaire.entities.User;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -25,14 +26,14 @@ public class BlockListener implements Listener {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item.getType() == Material.DIAMOND_PICKAXE || item.getType() == Material.NETHERITE_PICKAXE) {
                     if (item.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                        dev.ua.ikeepcalm.monetaire.entities.Player foundPlayer = playerDao.findByNickname(player);
-                        if (foundPlayer.getAutoDeposit()) {
-                            if (foundPlayer.getBalance() >= 1344){
+                        User foundUser = playerDao.findByNickname(player);
+                        if (foundUser.getAutoDeposit()) {
+                            if (foundUser.getCard().getBalance() >= 1344){
                                 TextComponent noFreeSpace = Component.text("Недостатньо місця в сховищі! Звільніть місце, або отримайте збільшений ліміт").color(TextColor.color(140, 200, 230));
                                 player.sendMessage(noFreeSpace);
                             } else {
-                                foundPlayer.setBalance(foundPlayer.getBalance() + 1);
-                                playerDao.save(foundPlayer);
+                                foundUser.getCard().setBalance(foundUser.getCard().getBalance() + 1);
+                                playerDao.save(foundUser);
                                 event.setDropItems(false);
                             }
                         }

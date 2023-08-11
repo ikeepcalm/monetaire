@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.monetaire.listeners;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,29 +13,21 @@ public class LoginListener implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerJoinEvent event) {
         org.bukkit.entity.Player player = event.getPlayer();
-        dev.ua.ikeepcalm.monetaire.entities.Player depositPlayer = playerDao.findByNickname(player);
-        if (depositPlayer.getFine()>0){
-            MiniMessage mm = MiniMessage.miniMessage();
-            StringBuilder sb = new StringBuilder();
-            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>У вас є активний штраф! Негайно сплатіть його!").append("\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Інакше ви не зможете повноцінно користуватися системою!").append("\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума штрафу: <#55FFFF>").append(depositPlayer.getFine()).append(" ДР\n");
-            sb.append("<bold><#5555FF>-----------------------------------------</bold>");
-            Component parsed = mm.deserialize(sb.toString());
-            player.sendMessage(parsed);
-        } else if (depositPlayer.getLoan()>0){
-            MiniMessage mm = MiniMessage.miniMessage();
-            StringBuilder sb = new StringBuilder();
-            sb.append("<bold><#5555FF>-----------------------------------------</bold>\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> <#FFFFFF>Ви маєте певну заборгованість!").append("\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Щоб позбутися і виплатити її - /paycredit").append("\n");
-            sb.append("<bold><#5555FF>BANK</bold> <#FFFFFF>> Сума боргу: <#55FFFF>").append(depositPlayer.getLoan()).append(" ДР\n");
-            sb.append("<bold><#5555FF>-----------------------------------------</bold>");
-            Component parsed = mm.deserialize(sb.toString());
-            player.sendMessage(parsed);
+        User loggedUser = playerDao.findByNickname(player);
+        if (loggedUser.getCard() != null) {
+            if (loggedUser.getCard().getFine() > 0) {
+                ChatUtil.sendMessage(player,
+                        "Ви маєте сплатити штраф!",
+                        "Інакше ви не зможете повноцінно користуватися банківською системою!",
+                        "Сума штрафів: <#55FFFF>" + loggedUser.getCard().getFine() + " ДР"
+                );
+            } else if (loggedUser.getCard().getLoan() > 0) {
+                ChatUtil.sendMessage(player,
+                        "Ви маєте певну заборгованість!",
+                        "Щоб позбутися і виплатити її - /paycredit!",
+                        "Сума боргу: <#55FFFF>" + loggedUser.getCard().getLoan() + " ДР"
+                );
+            }
         }
-
-
     }
 }
