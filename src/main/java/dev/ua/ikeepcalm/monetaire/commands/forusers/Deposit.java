@@ -69,6 +69,8 @@ public class Deposit {
                         systemTx.setAmount(amount);
                         systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                         systemTx.setSuccessful(true);
+                        systemTx.setMomentBalance("MainBalance: " + depositUser.getCard().getBalance()
+                                + " | Credits: "+ depositUser.getCard().getLoan() +" | Fines: " + depositUser.getCard().getFine());
                         systemTxDao.save(systemTx);
                         ChatUtil.sendMessage(player,
                                 "Успішне поповнення на <#55FFFF>" + amount + " ДР",

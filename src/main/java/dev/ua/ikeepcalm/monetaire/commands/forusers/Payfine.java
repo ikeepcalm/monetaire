@@ -46,6 +46,8 @@ public class Payfine {
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
                     systemTx.setAmount(Math.toIntExact(finedUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + finedUser.getCard().getBalance()
+                            + " | Credits: "+ finedUser.getCard().getLoan() +" | Fines: " + finedUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     playerDao.save(finedUser);
                     ChatUtil.sendMessage(player,
@@ -57,6 +59,8 @@ public class Payfine {
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
                     systemTx.setAmount(Math.toIntExact(finedUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + finedUser.getCard().getBalance()
+                            + " | Credits: "+ finedUser.getCard().getLoan() +" | Fines: " + finedUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Недостатньо коштів на балансі!",

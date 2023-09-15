@@ -46,6 +46,8 @@ public class Sponsor {
                         systemTx.setAmount(amount);
                         systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                         systemTx.setSuccessful(true);
+                        systemTx.setMomentBalance("MainBalance: " + sponsorUser.getCard().getBalance()
+                                + " | Credits: "+ sponsorUser.getCard().getLoan() +" | Fines: " + sponsorUser.getCard().getFine());
                         systemTxDao.save(systemTx);
                         MinFin minFin = minfinDao.getMinfin();
                         minFin.setBalance(minFin.getBalance()+amount);

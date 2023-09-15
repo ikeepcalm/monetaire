@@ -90,6 +90,8 @@ public class VaultGUI {
                             systemTx.setSender(foundUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.DEPOSIT);
+                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
+                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
                             systemTxDao.save(systemTx);
                         } else if (!(amount == foundUser.getCard().getBalance())) {
                             SystemTx systemTx = new SystemTx();
@@ -97,6 +99,8 @@ public class VaultGUI {
                             systemTx.setSender(foundUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.WITHDRAW);
+                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
+                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
                             systemTxDao.save(systemTx);
                         }
                         foundUser.getCard().setBalance((long) amount);

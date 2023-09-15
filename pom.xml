@@ -6,7 +6,7 @@
 
     <groupId>dev.ua.ikeepcalm</groupId>
     <artifactId>Monetaire</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
 
     <name>Monetaire</name>
@@ -104,6 +104,11 @@
             <version>3.1.0</version>
         </dependency>
         <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
             <groupId>dev.jorel</groupId>
             <artifactId>commandapi-bukkit-core</artifactId>
             <version>9.0.3</version>
@@ -114,11 +119,6 @@
             <artifactId>commandapi-annotations</artifactId>
             <version>9.0.3</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
         </dependency>
         <dependency>
             <groupId>xyz.xenondevs.invui</groupId>

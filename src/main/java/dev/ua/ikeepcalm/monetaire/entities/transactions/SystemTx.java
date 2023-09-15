@@ -23,8 +23,12 @@ public class SystemTx{
     @DatabaseField
     private String time;
 
+
     @DatabaseField(dataType = DataType.BOOLEAN)
     private boolean successful;
+
+    @DatabaseField
+    private String momentBalance;
 
     public String getSender() {
         return sender;
@@ -60,6 +64,14 @@ public class SystemTx{
 
     public boolean isSuccessful() {
         return successful;
+    }
+
+    public String getMomentBalance() {
+        return momentBalance;
+    }
+
+    public void setMomentBalance(String momentBalance) {
+        this.momentBalance = momentBalance;
     }
 
     public void setSuccessful(boolean successful) {

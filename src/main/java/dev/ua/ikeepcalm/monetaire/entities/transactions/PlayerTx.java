@@ -30,6 +30,10 @@ public class PlayerTx {
     @DatabaseField(dataType = DataType.BOOLEAN)
     private boolean successful;
 
+    @DatabaseField
+    private String momentBalance;
+
+
     public String getSender() {
         return sender;
     }
@@ -72,6 +76,14 @@ public class PlayerTx {
 
     public String getRecipient() {
         return recipient;
+    }
+
+    public String getMomentBalance() {
+        return momentBalance;
+    }
+
+    public void setMomentBalance(String momentBalance) {
+        this.momentBalance = momentBalance;
     }
 
     public void setRecipient(String recipient) {

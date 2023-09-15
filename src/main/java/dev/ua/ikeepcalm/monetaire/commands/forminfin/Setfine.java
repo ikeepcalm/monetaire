@@ -25,23 +25,30 @@ public class Setfine {
 
     @Default
     public static void setfine(Player finer, @APlayerArgument Player fined, @AIntegerArgument int amount) {
-        if (amount > 0){
+        if (amount > 0) {
             User foundFined = playerDao.findByNickname(fined);
-            foundFined.getCard().setFine(foundFined.getCard().getFine()+amount);
-            playerDao.save(foundFined);
-            SystemTx systemTx = new SystemTx();
-            systemTx.setActionType(ActionType.SETFINE);
-            systemTx.setSuccessful(true);
-            systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-            systemTx.setSender(fined.getName());
-            systemTx.setAmount(amount);
-            systemTxDao.save(systemTx);
-            ChatUtil.sendMessage(finer,
-                    "Ви встановили штраф <#55FFFF>" + amount + " ДР <#FFFFFF> гравцю " + fined.getName());
+            if (foundFined.getCard() != null) {
+                foundFined.getCard().setFine(foundFined.getCard().getFine() + amount);
+                playerDao.save(foundFined);
+                SystemTx systemTx = new SystemTx();
+                systemTx.setActionType(ActionType.SETFINE);
+                systemTx.setSuccessful(true);
+                systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
+                systemTx.setSender(fined.getName());
+                systemTx.setAmount(amount);
+                systemTx.setMomentBalance("MainBalance: " + foundFined.getCard().getBalance()
+                        + " | Credits: " + foundFined.getCard().getLoan() + " | Fines: " + foundFined.getCard().getFine());
+                systemTxDao.save(systemTx);
+                ChatUtil.sendMessage(finer,
+                        "Ви встановили штраф <#55FFFF>" + amount + " ДР <#FFFFFF> гравцю " + fined.getName());
 
-            ChatUtil.sendMessage(fined,
-                    "Вам встановлено штраф на суму <#55FFFF>" + amount + " ДР <#FFFFFF>",
-                    "Негайно виплатіть його, інакше ви втратите доступ до системи економіки!!");
+                ChatUtil.sendMessage(fined,
+                        "Вам встановлено штраф на суму <#55FFFF>" + amount + " ДР <#FFFFFF>",
+                        "Негайно виплатіть його, інакше ви втратите доступ до системи економіки!!");
+            } else {
+                ChatUtil.sendMessage(finer,
+                        "У цього гравця немає картки!");
+            }
         } else {
             ChatUtil.sendMessage(finer,
                     "Штраф не може бути від'ємним!");

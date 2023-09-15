@@ -2,6 +2,7 @@ package dev.ua.ikeepcalm.monetaire;
 
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
+import com.j256.ormlite.jdbc.db.MariaDbDatabaseType;
 import com.j256.ormlite.logger.Level;
 import com.j256.ormlite.logger.Logger;
 import dev.jorel.commandapi.CommandAPI;
@@ -45,7 +46,8 @@ public final class Monetaire extends JavaPlugin {
             JdbcPooledConnectionSource source = new JdbcPooledConnectionSource(
                     getConfig().getString("db_url"),
                     getConfig().getString("db_user"),
-                    getConfig().getString("db_password"));
+                    getConfig().getString("db_password"),
+                    new MariaDbDatabaseType());
             playerDao = DaoManager.createDao(source, User.class);
             minfinDao = DaoManager.createDao(source, MinFin.class);
             systemTxDao = DaoManager.createDao(source, SystemTx.class);

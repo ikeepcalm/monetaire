@@ -48,6 +48,8 @@ public class Paycredit {
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
                     systemTx.setAmount(Math.toIntExact(creditedUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + creditedUser.getCard().getBalance()
+                            + " | Credits: "+ creditedUser.getCard().getLoan() +" | Fines: " + creditedUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Ви успішно позбулися своєї заборгованності!");
@@ -58,6 +60,8 @@ public class Paycredit {
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
                     systemTx.setAmount(Math.toIntExact(creditedUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + creditedUser.getCard().getBalance()
+                            + " | Credits: "+ creditedUser.getCard().getLoan() +" | Fines: " + creditedUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Недостатньо коштів на балансі!",

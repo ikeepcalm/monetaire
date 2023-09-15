@@ -54,6 +54,8 @@ public class Withdraw {
                         systemTx.setAmount(amount);
                         systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                         systemTx.setSuccessful(true);
+                        systemTx.setMomentBalance("MainBalance: " + withdrawUser.getCard().getBalance()
+                                + " | Credits: "+ withdrawUser.getCard().getLoan() +" | Fines: " + withdrawUser.getCard().getFine());
                         systemTxDao.save(systemTx);
                         ChatUtil.sendMessage(player,
                                 "Успішне зняття <#55FFFF>" + amount + " ДР!",
@@ -66,6 +68,8 @@ public class Withdraw {
                     systemTx.setAmount(amount);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSuccessful(false);
+                    systemTx.setMomentBalance("MainBalance: " + withdrawUser.getCard().getBalance()
+                            + " | Credits: "+ withdrawUser.getCard().getLoan() +" | Fines: " + withdrawUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Недостатньо коштів!",

@@ -41,7 +41,11 @@ public class Transfer {
                     } else {
                         if (senderUser.getCard().getBalance() >= amount) {
                             User recipientUser = playerDao.findByNickname(recipient);
-                            if ((recipientUser.getCard().getBalance() + amount) > 1344) {
+                            if (recipientUser.getCard() == null){
+                                ChatUtil.sendMessage(sender,
+                                        "У цього гравця немає картки!");
+                            }
+                            else if ((recipientUser.getCard().getBalance() + amount) > 1344) {
                                 ChatUtil.sendMessage(sender,
                                         "У отримувача недостатньо місця в сховищі",
                                         "Ви не можете здійснити йому переказ!");
@@ -57,6 +61,8 @@ public class Transfer {
                                 playerTx.setRecipient(recipient.getName());
                                 playerTx.setActionType(ActionType.TRANSFER);
                                 playerTx.setSuccessful(true);
+                                playerTx.setMomentBalance("MainBalance: " + senderUser.getCard().getBalance()
+                                        + " | Credits: "+ senderUser.getCard().getLoan() +" | Fines: " + senderUser.getCard().getFine());
                                 playerTxDao.save(playerTx);
                                 ChatUtil.sendMessage(sender,
                                         "Ви переказали <#55FFFF>" + amount + " ДР<#FFFFFF> гравцю<#AAAAAA> " + recipient.getName(),
