@@ -1,8 +1,8 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank;
+package dev.ua.ikeepcalm.monetaire.gui.bank.menu;
 
 
 import dev.ua.ikeepcalm.monetaire.entities.User;
-import dev.ua.ikeepcalm.monetaire.gui.bank.items.AutoDepositItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.AutoDepositItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -22,7 +22,7 @@ public class SettingsGUI {
 
     public void openSettings(Player player) {
         User foundUser = playerDao.findByNickname(player);
-        TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
+        TextComponent windowComponent = Component.text("Налаштування").color(TextColor.color(255, 8, 131));
         TextComponent comingSoonComponent = Component.text("Скоро...").color(TextColor.color(255, 8, 131));
         TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));

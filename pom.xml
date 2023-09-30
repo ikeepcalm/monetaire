@@ -6,13 +6,13 @@
 
     <groupId>dev.ua.ikeepcalm</groupId>
     <artifactId>Monetaire</artifactId>
-    <version>1.3</version>
+    <version>1.9</version>
     <packaging>jar</packaging>
 
     <name>Monetaire</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.9</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

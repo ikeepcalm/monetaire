@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common.diamonds;
 
 
 import dev.jorel.commandapi.annotations.Command;
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.*;
 
 @Command("paycredit")
-@Permission("monetaire.paycredit")
+@Permission("monetaire.player")
 @Help("Використання: /paycredit")
 public class Paycredit {
 
@@ -28,7 +28,7 @@ public class Paycredit {
         if (creditedUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
-                    "Для отримання пройдіть у банк ➜ 41, 65, -17 ( Спавн )");
+                    "Спочатку виконайте ➜ /card");
         } else {
             if (creditedUser.getCard().getLoan() == 0){
                 ChatUtil.sendMessage(player,

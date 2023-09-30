@@ -1,6 +1,6 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank.items;
+package dev.ua.ikeepcalm.monetaire.gui.bank.menu.items;
 
-import dev.ua.ikeepcalm.monetaire.gui.bank.VaultGUI;
+import dev.ua.ikeepcalm.monetaire.gui.bank.menu.BalanceGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -14,18 +14,18 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
 
-public class VaultItem extends AbstractItem {
+public class BalanceItem extends AbstractItem {
 
     @Override
     public ItemProvider getItemProvider() {
-        TextComponent depositComponent = Component.text("Сховище").color(TextColor.color(255, 8, 131));
-        return new ItemBuilder(Material.DEEPSLATE_DIAMOND_ORE).setDisplayName(new AdventureComponentWrapper(depositComponent));
+        TextComponent balanceComponent = Component.text("Рахунки").color(TextColor.color(255, 8, 131));
+        return new ItemBuilder(Material.ENDER_CHEST).setDisplayName(new AdventureComponentWrapper(balanceComponent));
     }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         if (clickType.isRightClick() || clickType.isLeftClick()){
-            new VaultGUI().openVault(player);
+            new BalanceGUI().openBalance(player);
         }
     }
 }

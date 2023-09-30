@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank;
+package dev.ua.ikeepcalm.monetaire.gui.bank.menu;
 
 import dev.ua.ikeepcalm.monetaire.entities.User;
 import net.kyori.adventure.text.Component;
@@ -19,33 +19,33 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 public class BalanceGUI {
     public void openBalance(Player player) {
         User foundUser = playerDao.findByNickname(player);
-        TextComponent balanceComponent = Component.text("Рахунок: " + foundUser.getCard().getBalance() + " ДР").color(TextColor.color(255, 8, 131));
+        TextComponent drComponent = Component.text("Діри: " + foundUser.getCard().getBalance() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent fineComponent = Component.text("Дійсні штрафи: " + foundUser.getCard().getFine() + " ДР").color(TextColor.color(255, 8, 131));
         TextComponent loanComponent = Component.text("Заборгованість: " + foundUser.getCard().getLoan() + " ДР").color(TextColor.color(255, 8, 131));
-        TextComponent sponsoredComponent = Component.text("Проспонсовано: " + foundUser.getCard().getSponsored() + " ДР").color(TextColor.color(255, 8, 131));
+        TextComponent aurComponent = Component.text("Аури: " + foundUser.getCard().getCoins() + " AUR").color(TextColor.color(255, 8, 131));
         TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));
-        TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
+        TextComponent windowComponent = Component.text("Рахунки").color(TextColor.color(255, 8, 131));
 
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));
         Item filler = new SimpleItem(new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE));
-        Item balance = new SimpleItem(new ItemBuilder(Material.DEEPSLATE_DIAMOND_ORE).setDisplayName(new AdventureComponentWrapper(balanceComponent)));
+        Item dr = new SimpleItem(new ItemBuilder(Material.DEEPSLATE_DIAMOND_ORE).setDisplayName(new AdventureComponentWrapper(drComponent)));
         Item fine = new SimpleItem(new ItemBuilder(Material.DEEPSLATE_COAL_ORE).setDisplayName(new AdventureComponentWrapper(fineComponent)));
         Item loan = new SimpleItem(new ItemBuilder(Material.DEEPSLATE_COPPER_ORE).setDisplayName(new AdventureComponentWrapper(loanComponent)));
-        Item sponsored = new SimpleItem(new ItemBuilder(Material.DEEPSLATE_EMERALD_ORE).setDisplayName(new AdventureComponentWrapper(sponsoredComponent)));
+        Item aur = new SimpleItem(new ItemBuilder(Material.CLOCK).setDisplayName(new AdventureComponentWrapper(aurComponent)).setCustomModelData(1633212000));
         Item back = new CommandItem(new ItemBuilder(Material.NETHER_STAR).setDisplayName(new AdventureComponentWrapper(backComponent)), "/bank");
         Gui gui = Gui.normal()
                 .setStructure(
                         "@ @ @ @ @ @ @ @ @",
-                        "@ . b . . . l . @",
+                        "@ . b . . . s . @",
                         "@ . . . . . . . @",
-                        "@ . f . . . s . @",
+                        "@ . f . . . l . @",
                         "@ @ @ @ e @ @ @ @")
                 .addIngredient('@', border)
                 .addIngredient('.', filler)
-                .addIngredient('b', balance)
+                .addIngredient('b', dr)
                 .addIngredient('f', fine)
                 .addIngredient('l', loan)
-                .addIngredient('s', sponsored)
+                .addIngredient('s', aur)
                 .addIngredient('e', back)
                 .build();
         Window window = Window.single()

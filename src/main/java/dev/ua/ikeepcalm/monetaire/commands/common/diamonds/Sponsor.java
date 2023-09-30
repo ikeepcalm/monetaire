@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common.diamonds;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.*;
 
 @Command("sponsor")
-@Permission("monetaire.sponsor")
+@Permission("monetaire.player")
 public class Sponsor {
 
     @Default
@@ -27,7 +27,7 @@ public class Sponsor {
             if (sponsorUser.getCard() == null) {
                 ChatUtil.sendMessage(player,
                         "У вас немає картки!",
-                        "Для отримання пройдіть у банк ➜ 41, 65, -17 ( Спавн )");
+                        "Спочатку виконайте ➜ /card");
             } else {
                 if (sponsorUser.getCard().getFine() > 0){
                     ChatUtil.sendMessage(player,

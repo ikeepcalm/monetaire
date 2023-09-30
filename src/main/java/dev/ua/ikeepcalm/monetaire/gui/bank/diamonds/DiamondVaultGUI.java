@@ -1,9 +1,9 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank;
+package dev.ua.ikeepcalm.monetaire.gui.bank.diamonds;
 
 import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
-import dev.ua.ikeepcalm.monetaire.gui.bank.items.BackItem;
+import dev.ua.ikeepcalm.monetaire.gui.bank.diamonds.items.DiamondBackItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -24,7 +24,7 @@ import xyz.xenondevs.invui.window.Window;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
-public class VaultGUI {
+public class DiamondVaultGUI {
 
     ItemStack[] inventoryToRestore;
     ItemStack[] savedInventory;
@@ -32,7 +32,7 @@ public class VaultGUI {
 
     public void openVault(Player player) {
         User foundUser = playerDao.findByNickname(player);
-        TextComponent windowComponent = Component.text("Економіка (?)").color(TextColor.color(255, 8, 131));
+        TextComponent windowComponent = Component.text("Сховище Діарів").color(TextColor.color(255, 8, 131));
 //
         inventoryToRestore = player.getInventory().getContents();
         virtualInventory = new VirtualInventory(21);
@@ -55,7 +55,7 @@ public class VaultGUI {
 //
 
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));
-        Item back = new BackItem(this);
+        Item back = new DiamondBackItem(this);
 
         Gui gui = Gui.normal()
                 .setStructure(

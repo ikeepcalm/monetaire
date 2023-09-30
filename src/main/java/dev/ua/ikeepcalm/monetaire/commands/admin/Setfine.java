@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forminfin;
+package dev.ua.ikeepcalm.monetaire.commands.admin;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -19,7 +19,7 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 @Command("setfine")
-@Permission("monetaire.setfine")
+@Permission("monetaire.admin")
 @Help("Використання: /setfine <гравець> <к-сть діамантової руди>")
 public class Setfine {
 

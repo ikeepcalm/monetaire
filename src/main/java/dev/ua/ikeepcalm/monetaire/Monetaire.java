@@ -7,9 +7,14 @@ import com.j256.ormlite.logger.Level;
 import com.j256.ormlite.logger.Logger;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
-import dev.ua.ikeepcalm.monetaire.commands.forminfin.Setcredit;
-import dev.ua.ikeepcalm.monetaire.commands.forminfin.Setfine;
-import dev.ua.ikeepcalm.monetaire.commands.forusers.*;
+import dev.ua.ikeepcalm.monetaire.commands.admin.Setcredit;
+import dev.ua.ikeepcalm.monetaire.commands.admin.Setfine;
+import dev.ua.ikeepcalm.monetaire.commands.common.*;
+import dev.ua.ikeepcalm.monetaire.commands.common.coins.Convert;
+import dev.ua.ikeepcalm.monetaire.commands.common.coins.Depcoin;
+import dev.ua.ikeepcalm.monetaire.commands.common.coins.Unconvert;
+import dev.ua.ikeepcalm.monetaire.commands.common.coins.Withcoin;
+import dev.ua.ikeepcalm.monetaire.commands.common.diamonds.*;
 import dev.ua.ikeepcalm.monetaire.dao.*;
 import dev.ua.ikeepcalm.monetaire.entities.Advertiser;
 import dev.ua.ikeepcalm.monetaire.entities.Card;
@@ -17,7 +22,6 @@ import dev.ua.ikeepcalm.monetaire.entities.MinFin;
 import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
-import dev.ua.ikeepcalm.monetaire.gui.bank.MenuGUI;
 import dev.ua.ikeepcalm.monetaire.gui.shop.ShopGUI;
 import dev.ua.ikeepcalm.monetaire.listeners.BlockListener;
 import dev.ua.ikeepcalm.monetaire.listeners.ItemListener;
@@ -76,7 +80,7 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(this).verboseOutput(true));
         CommandAPI.registerCommand(Balance.class);
         CommandAPI.registerCommand(Employ.class);
-        CommandAPI.registerCommand(MenuGUI.class);
+        CommandAPI.registerCommand(Bank.class);
         CommandAPI.registerCommand(Deposit.class);
         CommandAPI.registerCommand(Withdraw.class);
         CommandAPI.registerCommand(Sponsor.class);
@@ -87,5 +91,9 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Paycredit.class);
         CommandAPI.registerCommand(ShopGUI.class);
         CommandAPI.registerCommand(CardIssue.class);
+        CommandAPI.registerCommand(Withcoin.class);
+        CommandAPI.registerCommand(Depcoin.class);
+        CommandAPI.registerCommand(Convert.class);
+        CommandAPI.registerCommand(Unconvert.class);
     }
 }

@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forminfin;
+package dev.ua.ikeepcalm.monetaire.commands.admin;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.*;
 
 @Command("setcredit")
-@Permission("monetaire.setcredit")
+@Permission("monetaire.admin")
 @Help("Використання: /setfine <гравець> <к-сть діамантової руди> <тариф>")
 public class Setcredit {
 

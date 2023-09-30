@@ -60,6 +60,7 @@ public class CardDao extends BaseDaoImpl<Card, Long> {
             card.setLoan(0L);
             card.setFine(0L);
             card.setOnlineb(0L);
+            card.setCoins(0L);
             user.setCard(card);
 
             create(card);

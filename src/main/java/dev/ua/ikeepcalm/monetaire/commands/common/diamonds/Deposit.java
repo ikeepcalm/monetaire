@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common.diamonds;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -20,7 +20,7 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 @Command("deposit")
-@Permission("monetaire.deposit")
+@Permission("monetaire.player")
 @Help("Використання: /deposit <к-сть діамантової руди>")
 public class Deposit {
 
@@ -31,7 +31,7 @@ public class Deposit {
             if (depositUser.getCard() == null) {
                 ChatUtil.sendMessage(player,
                         "У вас немає картки!",
-                        "Для отримання пройдіть у банк ➜ 41, 65, -17 ( Спавн )");
+                        "Спочатку виконайте ➜ /card");
             } else {
                 if (player.getInventory().containsAtLeast(new ItemStack(Material.DIAMOND_ORE), amount)) {
                     if (depositUser.getCard().getBalance() >= 1344) {

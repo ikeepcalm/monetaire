@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common;
 
 import dev.jorel.commandapi.annotations.*;
 import dev.ua.ikeepcalm.monetaire.entities.User;
@@ -9,7 +9,7 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 
 @Command("balance")
 @Alias({"myinfo"})
-@Permission("monetaire.balance")
+@Permission("monetaire.player")
 @Help("Використання: /balance; /myinfo")
 public class Balance {
 
@@ -19,11 +19,12 @@ public class Balance {
         if (foundUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
-                    "Для отримання пройдіть у банк ➜ 41, 65, -17 ( Спавн )");
+                    "Спочатку виконайте ➜ /card");
         } else {
             ChatUtil.sendMessage(player,
                     "Інформація о рахунках:",
-                    "Рахунок: <#55FFFF>" + foundUser.getCard().getBalance() + " ДР",
+                    "Аури: <#55FFFF>" + foundUser.getCard().getCoins() + " AUR",
+                    "Діри: <#55FFFF>" + foundUser.getCard().getBalance() + " ДР",
                     "Дійсні борги: <#55FFFF>" + foundUser.getCard().getLoan() + " ДР",
                     "Дійсні штрафи: <#55FFFF>" + foundUser.getCard().getFine() + " ДР"
             );

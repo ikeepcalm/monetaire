@@ -1,9 +1,9 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank.items;
+package dev.ua.ikeepcalm.monetaire.gui.bank.coins.items;
 
 import dev.ua.ikeepcalm.monetaire.entities.User;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
-import dev.ua.ikeepcalm.monetaire.gui.bank.VaultGUI;
+import dev.ua.ikeepcalm.monetaire.gui.bank.coins.CoinsVaultGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,12 +21,12 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
-public class BackItem extends AbstractItem {
+public class CoinsBackItem extends AbstractItem {
 
-    VaultGUI vaultGUI;
+    CoinsVaultGUI coinsVaultGUI;
 
-    public BackItem(VaultGUI vaultGUI) {
-        this.vaultGUI = vaultGUI;
+    public CoinsBackItem(CoinsVaultGUI coinsVaultGUI) {
+        this.coinsVaultGUI = coinsVaultGUI;
     }
 
     @Override
@@ -41,28 +41,28 @@ public class BackItem extends AbstractItem {
             int amount = 0;
             for (ItemStack itemStack : inventoryClickEvent.getClickedInventory().getContents()) {
                 if (itemStack != null) {
-                    if (itemStack.getType() == Material.DEEPSLATE_DIAMOND_ORE || itemStack.getType() == Material.DIAMOND_ORE) {
+                    if (!(itemStack.getType() == Material.CLOCK || itemStack.getItemMeta().hasCustomModelData())) {
                         amount += itemStack.getAmount();
                     }
                 }
             }
             User foundUser = playerDao.findByNickname(player);
-            if (amount > foundUser.getCard().getBalance()){
+            if (amount > foundUser.getCard().getCoins()){
                 SystemTx systemTx = new SystemTx();
                 systemTx.setAmount(amount);
                 systemTx.setSender(foundUser.getNickname());
                 systemTx.setSuccessful(true);
-                systemTx.setActionType(ActionType.DEPOSIT);
+                systemTx.setActionType(ActionType.DEPCOIN);
                 systemTxDao.save(systemTx);
-            } else if (!(amount == foundUser.getCard().getBalance())){
+            } else if (!(amount == foundUser.getCard().getCoins())){
                 SystemTx systemTx = new SystemTx();
                 systemTx.setAmount(amount);
                 systemTx.setSender(foundUser.getNickname());
                 systemTx.setSuccessful(true);
-                systemTx.setActionType(ActionType.WITHDRAW);
+                systemTx.setActionType(ActionType.WITHCOIN);
                 systemTxDao.save(systemTx);
             }
-            foundUser.getCard().setBalance((long) amount);
+            foundUser.getCard().setCoins((long) amount);
             playerDao.save(foundUser);
             player.performCommand("bank");
         }

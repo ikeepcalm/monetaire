@@ -21,6 +21,9 @@ public class Card {
     private Long balance;
 
     @DatabaseField
+    private Long coins;
+
+    @DatabaseField
     private Long onlineb;
 
     @DatabaseField
@@ -32,6 +35,14 @@ public class Card {
     @DatabaseField(defaultValue = "0")
     private Long sponsored;
 
+
+    public Long getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Long coins) {
+        this.coins = coins;
+    }
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private User holder;

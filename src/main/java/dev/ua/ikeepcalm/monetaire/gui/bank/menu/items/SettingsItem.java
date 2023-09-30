@@ -1,6 +1,6 @@
-package dev.ua.ikeepcalm.monetaire.gui.bank.items;
+package dev.ua.ikeepcalm.monetaire.gui.bank.menu.items;
 
-import dev.ua.ikeepcalm.monetaire.gui.bank.BalanceGUI;
+import dev.ua.ikeepcalm.monetaire.gui.bank.menu.SettingsGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -14,18 +14,18 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
 
-public class BalanceItem extends AbstractItem {
+public class SettingsItem extends AbstractItem {
 
     @Override
     public ItemProvider getItemProvider() {
-        TextComponent balanceComponent = Component.text("Рахунки").color(TextColor.color(255, 8, 131));
-        return new ItemBuilder(Material.ENDER_CHEST).setDisplayName(new AdventureComponentWrapper(balanceComponent));
+        TextComponent depositComponent = Component.text("Налаштування").color(TextColor.color(255, 8, 131));
+        return new ItemBuilder(Material.ANVIL).setDisplayName(new AdventureComponentWrapper(depositComponent));
     }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         if (clickType.isRightClick() || clickType.isLeftClick()){
-            new BalanceGUI().openBalance(player);
+            new SettingsGUI().openSettings(player);
         }
     }
 }

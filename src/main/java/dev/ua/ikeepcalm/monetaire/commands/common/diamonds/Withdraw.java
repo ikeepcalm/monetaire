@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common.diamonds;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -19,7 +19,7 @@ import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 @Command("withdraw")
-@Permission("monetaire.withdraw")
+@Permission("monetaire.player")
 public class Withdraw {
 
     @Default
@@ -29,7 +29,7 @@ public class Withdraw {
             if (withdrawUser.getCard() == null) {
                 ChatUtil.sendMessage(player,
                         "У вас немає картки!",
-                        "Для отримання пройдіть у банк ➜ 41, 65, -17 ( Спавн )");
+                        "Спочатку виконайте ➜ /card");
             }
             if (withdrawUser.getCard().getFine() > 0) {
                 ChatUtil.sendMessage(player,

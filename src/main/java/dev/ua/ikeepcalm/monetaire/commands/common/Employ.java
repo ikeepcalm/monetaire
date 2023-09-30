@@ -1,4 +1,4 @@
-package dev.ua.ikeepcalm.monetaire.commands.forusers;
+package dev.ua.ikeepcalm.monetaire.commands.common;
 
 import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.advertiserDao;
 
 @Command("employ")
-@Permission("monetaire.shop")
+@Permission("monetaire.advertiser")
 @Help("Використання: /employ")
 public class Employ {
 
