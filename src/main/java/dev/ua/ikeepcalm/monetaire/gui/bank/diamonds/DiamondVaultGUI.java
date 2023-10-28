@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.diamonds;
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.gui.bank.diamonds.items.DiamondBackItem;
@@ -21,7 +21,7 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 public class DiamondVaultGUI {
@@ -31,12 +31,12 @@ public class DiamondVaultGUI {
     VirtualInventory virtualInventory;
 
     public void openVault(Player player) {
-        User foundUser = playerDao.findByNickname(player);
+        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Сховище Діарів").color(TextColor.color(255, 8, 131));
 //
         inventoryToRestore = player.getInventory().getContents();
         virtualInventory = new VirtualInventory(21);
-        int diamondOreAmount = Math.toIntExact(foundUser.getCard().getBalance());
+        int diamondOreAmount = Math.toIntExact(foundEcoUser.getCard().getBalance());
         ItemStack diamondOre = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, diamondOreAmount);
         virtualInventory.addItem(UpdateReason.SUPPRESSED, diamondOre);
         virtualInventory.setPreUpdateHandler(new Consumer<ItemPreUpdateEvent>() {
@@ -83,28 +83,28 @@ public class DiamondVaultGUI {
                                 }
                             }
                         }
-                        User foundUser = playerDao.findByNickname(player);
-                        if (amount > foundUser.getCard().getBalance()) {
+                        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
+                        if (amount > foundEcoUser.getCard().getBalance()) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundUser.getNickname());
+                            systemTx.setSender(foundEcoUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.DEPOSIT);
-                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
-                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
+                            systemTx.setMomentBalance("MainBalance: " + foundEcoUser.getCard().getBalance()
+                                    + " | Credits: "+ foundEcoUser.getCard().getLoan() +" | Fines: " + foundEcoUser.getCard().getFine());
                             systemTxDao.save(systemTx);
-                        } else if (!(amount == foundUser.getCard().getBalance())) {
+                        } else if (!(amount == foundEcoUser.getCard().getBalance())) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundUser.getNickname());
+                            systemTx.setSender(foundEcoUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.WITHDRAW);
-                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
-                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
+                            systemTx.setMomentBalance("MainBalance: " + foundEcoUser.getCard().getBalance()
+                                    + " | Credits: "+ foundEcoUser.getCard().getLoan() +" | Fines: " + foundEcoUser.getCard().getFine());
                             systemTxDao.save(systemTx);
                         }
-                        foundUser.getCard().setBalance((long) amount);
-                        playerDao.save(foundUser);
+                        foundEcoUser.getCard().setBalance((long) amount);
+                        ecoPlayerDao.save(foundEcoUser);
                     }
                 })
                 .build();

@@ -6,7 +6,7 @@ import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 @Command("setfine")
@@ -26,10 +26,10 @@ public class Setfine {
     @Default
     public static void setfine(Player finer, @APlayerArgument Player fined, @AIntegerArgument int amount) {
         if (amount > 0) {
-            User foundFined = playerDao.findByNickname(fined);
+            EcoUser foundFined = ecoPlayerDao.findByNickname(fined);
             if (foundFined.getCard() != null) {
                 foundFined.getCard().setFine(foundFined.getCard().getFine() + amount);
-                playerDao.save(foundFined);
+                ecoPlayerDao.save(foundFined);
                 SystemTx systemTx = new SystemTx();
                 systemTx.setActionType(ActionType.SETFINE);
                 systemTx.setSuccessful(true);

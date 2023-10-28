@@ -3,6 +3,7 @@ package dev.ua.ikeepcalm.monetaire;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.jdbc.db.MariaDbDatabaseType;
+import com.j256.ormlite.jdbc.db.MysqlDatabaseType;
 import com.j256.ormlite.logger.Level;
 import com.j256.ormlite.logger.Logger;
 import dev.jorel.commandapi.CommandAPI;
@@ -15,17 +16,16 @@ import dev.ua.ikeepcalm.monetaire.commands.common.coins.Depcoin;
 import dev.ua.ikeepcalm.monetaire.commands.common.coins.Unconvert;
 import dev.ua.ikeepcalm.monetaire.commands.common.coins.Withcoin;
 import dev.ua.ikeepcalm.monetaire.commands.common.diamonds.*;
+import dev.ua.ikeepcalm.monetaire.commands.common.reverence.Rep;
 import dev.ua.ikeepcalm.monetaire.dao.*;
-import dev.ua.ikeepcalm.monetaire.entities.Advertiser;
-import dev.ua.ikeepcalm.monetaire.entities.Card;
-import dev.ua.ikeepcalm.monetaire.entities.MinFin;
-import dev.ua.ikeepcalm.monetaire.entities.User;
-import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
+import dev.ua.ikeepcalm.monetaire.entities.*;
+import dev.ua.ikeepcalm.monetaire.entities.transactions.EcoPlayerTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.gui.shop.ShopGUI;
 import dev.ua.ikeepcalm.monetaire.listeners.BlockListener;
 import dev.ua.ikeepcalm.monetaire.listeners.ItemListener;
 import dev.ua.ikeepcalm.monetaire.listeners.LoginListener;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -33,12 +33,13 @@ import java.sql.SQLException;
 
 public final class Monetaire extends JavaPlugin {
 
-    public static PlayerDao playerDao;
+    public static EcoPlayerDao ecoPlayerDao;
     public static MinfinDao minfinDao;
     public static SystemTxDao systemTxDao;
-    public static PlayerTxDao playerTxDao;
+    public static EcoPlayerTxDao ecoPlayerTxDao;
     public static AdvertiserDao advertiserDao;
     public static CardDao cardDao;
+    public static RepPlayerDao repPlayerDao;
 
     public File configFile = new File(getDataFolder() + File.separator + "config.yml");
 
@@ -47,17 +48,28 @@ public final class Monetaire extends JavaPlugin {
         if (!configFile.exists()){
             saveDefaultConfig();
         } try {
-            JdbcPooledConnectionSource source = new JdbcPooledConnectionSource(
-                    getConfig().getString("db_url"),
-                    getConfig().getString("db_user"),
-                    getConfig().getString("db_password"),
+            JdbcPooledConnectionSource ecoSource = new JdbcPooledConnectionSource(
+                    getConfig().getString("eco_db_url"),
+                    getConfig().getString("eco_db_user"),
+                    getConfig().getString("eco_db_password"),
                     new MariaDbDatabaseType());
-            playerDao = DaoManager.createDao(source, User.class);
-            minfinDao = DaoManager.createDao(source, MinFin.class);
-            systemTxDao = DaoManager.createDao(source, SystemTx.class);
-            playerTxDao = DaoManager.createDao(source, PlayerTx.class);
-            advertiserDao = DaoManager.createDao(source, Advertiser.class);
-            cardDao = DaoManager.createDao(source, Card.class);
+
+            JdbcPooledConnectionSource repSource = new JdbcPooledConnectionSource(
+                    getConfig().getString("rep_db_url"),
+                    getConfig().getString("rep_db_user"),
+                    getConfig().getString("rep_db_password"),
+                    new MysqlDatabaseType());
+
+            repSource.initialize();
+
+            ecoPlayerDao = DaoManager.createDao(ecoSource, EcoUser.class);
+            minfinDao = DaoManager.createDao(ecoSource, MinFin.class);
+            systemTxDao = DaoManager.createDao(ecoSource, SystemTx.class);
+            ecoPlayerTxDao = DaoManager.createDao(ecoSource, EcoPlayerTx.class);
+            advertiserDao = DaoManager.createDao(ecoSource, Advertiser.class);
+            cardDao = DaoManager.createDao(ecoSource, Card.class);
+            repPlayerDao = DaoManager.createDao(repSource, RepUser.class);
+
             Configuration.configuration = getConfig();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -66,6 +78,13 @@ public final class Monetaire extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockListener(), this);
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
         Logger.setGlobalLogLevel(Level.OFF);
+        int ticksPerDay = 20 * 60 * 60 * 24;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                repPlayerDao.updateCredits();
+            }
+        }, 0, ticksPerDay);
         getLogger().info("Successfully launched Monetaire (UAPROJECT SPEC.)");
     }
 
@@ -95,5 +114,6 @@ public final class Monetaire extends JavaPlugin {
         CommandAPI.registerCommand(Depcoin.class);
         CommandAPI.registerCommand(Convert.class);
         CommandAPI.registerCommand(Unconvert.class);
+        CommandAPI.registerCommand(Rep.class);
     }
 }

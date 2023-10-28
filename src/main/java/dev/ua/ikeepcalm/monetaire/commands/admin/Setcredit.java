@@ -8,7 +8,7 @@ import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
 import dev.jorel.commandapi.annotations.arguments.APlayerArgument;
 import dev.jorel.commandapi.annotations.arguments.AStringArgument;
 import dev.ua.ikeepcalm.monetaire.entities.MinFin;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
@@ -30,49 +30,49 @@ public class Setcredit {
     public static void setcredit(Player crediter, @APlayerArgument Player credited, @AIntegerArgument int amount, @AStringArgument String tarif) {
         if (amount > 0) {
             if (tarif.equals("oneweek") || tarif.equals("twoweek") || tarif.equals("threeweek")) {
-                User creditedUser = playerDao.findByNickname(credited);
-                if (creditedUser.getCard() == null) {
+                EcoUser creditedEcoUser = ecoPlayerDao.findByNickname(credited);
+                if (creditedEcoUser.getCard() == null) {
                     MinFin minFin = minfinDao.getMinfin();
                     minFin.setBalance(minFin.getBalance() - amount);
                     long finalAmount = 0;
                     switch (tarif) {
                         case "oneweek" -> {
                             finalAmount = (long) (amount + amount * 0.02);
-                            creditedUser.getCard().setLoan(finalAmount);
+                            creditedEcoUser.getCard().setLoan(finalAmount);
                         }
                         case "twoweek" -> {
                             finalAmount = (long) (amount + amount * 0.03);
-                            creditedUser.getCard().setLoan(finalAmount);
+                            creditedEcoUser.getCard().setLoan(finalAmount);
                         }
                         case "threeweek" -> {
                             finalAmount = (long) (amount + amount * 0.04);
-                            creditedUser.getCard().setLoan(finalAmount);
+                            creditedEcoUser.getCard().setLoan(finalAmount);
                         }
                     }
                     minFin.setWaitCredits(minFin.getWaitCredits() + finalAmount);
                     minfinDao.save(minFin);
-                    if ((creditedUser.getCard().getBalance() + amount) <= 1344) {
-                        creditedUser.getCard().setBalance(creditedUser.getCard().getBalance() + amount);
+                    if ((creditedEcoUser.getCard().getBalance() + amount) <= 1344) {
+                        creditedEcoUser.getCard().setBalance(creditedEcoUser.getCard().getBalance() + amount);
                     } else {
-                        creditedUser.getCard().setBalance(1344L);
-                        int exceededAmount = (int) (creditedUser.getCard().getBalance() + amount - 1344);
+                        creditedEcoUser.getCard().setBalance(1344L);
+                        int exceededAmount = (int) (creditedEcoUser.getCard().getBalance() + amount - 1344);
                         ItemStack itemStack = new ItemStack(Material.DEEPSLATE_DIAMOND_ORE, exceededAmount);
                         credited.getWorld().dropItemNaturally(credited.getLocation().add(0, 1, 0), itemStack);
                     }
 
-                    playerDao.save(creditedUser);
+                    ecoPlayerDao.save(creditedEcoUser);
                     SystemTx systemTx = new SystemTx();
                     systemTx.setActionType(ActionType.SETCREDIT);
                     systemTx.setSuccessful(true);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(credited.getName());
                     systemTx.setAmount(amount);
-                    systemTx.setMomentBalance("MainBalance: " + creditedUser.getCard().getBalance()
-                            + " | Credits: " + creditedUser.getCard().getLoan() + " | Fines: " + creditedUser.getCard().getFine());
+                    systemTx.setMomentBalance("MainBalance: " + creditedEcoUser.getCard().getBalance()
+                            + " | Credits: " + creditedEcoUser.getCard().getLoan() + " | Fines: " + creditedEcoUser.getCard().getFine());
 
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(crediter,
-                            "Ви надали позику на суму <#55FFFF>" + creditedUser.getCard().getLoan() + " ДР <#FFFFFF>гравцю <#FFAA00>" + creditedUser.getNickname());
+                            "Ви надали позику на суму <#55FFFF>" + creditedEcoUser.getCard().getLoan() + " ДР <#FFFFFF>гравцю <#FFAA00>" + creditedEcoUser.getNickname());
 
                     ChatUtil.sendMessage(credited,
                             "Вам надано позику на суму <#55FFFF>" + amount + " ДР <#FFFFFF>",

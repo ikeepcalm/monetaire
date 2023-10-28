@@ -2,10 +2,10 @@ package dev.ua.ikeepcalm.monetaire.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import dev.ua.ikeepcalm.monetaire.dao.PlayerDao;
+import dev.ua.ikeepcalm.monetaire.dao.EcoPlayerDao;
 
-@DatabaseTable(tableName = "players", daoClass = PlayerDao.class)
-public class User {
+@DatabaseTable(tableName = "players", daoClass = EcoPlayerDao.class)
+public class EcoUser {
 
     @DatabaseField(generatedId = true)
     private Long id;

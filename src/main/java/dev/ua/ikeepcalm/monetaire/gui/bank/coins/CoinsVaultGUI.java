@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.coins;
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.gui.bank.coins.items.CoinsBackItem;
@@ -25,7 +25,7 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 public class CoinsVaultGUI {
@@ -35,12 +35,12 @@ public class CoinsVaultGUI {
     VirtualInventory virtualInventory;
 
     public void openVault(Player player) {
-        User foundUser = playerDao.findByNickname(player);
+        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Сховище Аурів").color(TextColor.color(255, 8, 131));
 //
         inventoryToRestore = player.getInventory().getContents();
         virtualInventory = new VirtualInventory(21);
-        int coinsAmount = Math.toIntExact(foundUser.getCard().getCoins());
+        int coinsAmount = Math.toIntExact(foundEcoUser.getCard().getCoins());
         ItemStack coin = new ItemStack(Material.CLOCK);
         coin.setAmount(coinsAmount);
         ItemMeta itemMeta = coin.getItemMeta();
@@ -94,28 +94,28 @@ public class CoinsVaultGUI {
                                 }
                             }
                         }
-                        User foundUser = playerDao.findByNickname(player);
-                        if (amount > foundUser.getCard().getCoins()) {
+                        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
+                        if (amount > foundEcoUser.getCard().getCoins()) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundUser.getNickname());
+                            systemTx.setSender(foundEcoUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.DEPCOIN);
-                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
-                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
+                            systemTx.setMomentBalance("MainBalance: " + foundEcoUser.getCard().getBalance()
+                                    + " | Credits: "+ foundEcoUser.getCard().getLoan() +" | Fines: " + foundEcoUser.getCard().getFine());
                             systemTxDao.save(systemTx);
-                        } else if (!(amount == foundUser.getCard().getCoins())) {
+                        } else if (!(amount == foundEcoUser.getCard().getCoins())) {
                             SystemTx systemTx = new SystemTx();
                             systemTx.setAmount(amount);
-                            systemTx.setSender(foundUser.getNickname());
+                            systemTx.setSender(foundEcoUser.getNickname());
                             systemTx.setSuccessful(true);
                             systemTx.setActionType(ActionType.WITHCOIN);
-                            systemTx.setMomentBalance("MainBalance: " + foundUser.getCard().getBalance()
-                                    + " | Credits: "+ foundUser.getCard().getLoan() +" | Fines: " + foundUser.getCard().getFine());
+                            systemTx.setMomentBalance("MainBalance: " + foundEcoUser.getCard().getBalance()
+                                    + " | Credits: "+ foundEcoUser.getCard().getLoan() +" | Fines: " + foundEcoUser.getCard().getFine());
                             systemTxDao.save(systemTx);
                         }
-                        foundUser.getCard().setCoins((long) amount);
-                        playerDao.save(foundUser);
+                        foundEcoUser.getCard().setCoins((long) amount);
+                        ecoPlayerDao.save(foundEcoUser);
                     }
                 })
                 .build();

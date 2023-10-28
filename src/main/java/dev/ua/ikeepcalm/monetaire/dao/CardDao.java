@@ -4,13 +4,13 @@ import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import dev.ua.ikeepcalm.monetaire.entities.Card;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.utils.CardUtil;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 public class CardDao extends BaseDaoImpl<Card, Long> {
 
@@ -44,7 +44,7 @@ public class CardDao extends BaseDaoImpl<Card, Long> {
     }
 
 
-    public Card create(User user) {
+    public Card create(EcoUser ecoUser) {
         init();
         try {
             String cardNumber;
@@ -53,7 +53,7 @@ public class CardDao extends BaseDaoImpl<Card, Long> {
             } while (numberExists(cardNumber));
 
             Card card = new Card();
-            card.setHolder(user);
+            card.setHolder(ecoUser);
             card.setNumber(cardNumber);
             card.setCvv(CardUtil.generateCVV());
             card.setBalance(0L);
@@ -61,10 +61,10 @@ public class CardDao extends BaseDaoImpl<Card, Long> {
             card.setFine(0L);
             card.setOnlineb(0L);
             card.setCoins(0L);
-            user.setCard(card);
+            ecoUser.setCard(card);
 
             create(card);
-            playerDao.save(user);
+            ecoPlayerDao.save(ecoUser);
             return card;
         } catch (SQLException e) {
             throw new RuntimeException(e);

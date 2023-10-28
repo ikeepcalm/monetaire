@@ -4,7 +4,7 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.jorel.commandapi.annotations.arguments.AIntegerArgument;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 import static dev.ua.ikeepcalm.monetaire.Monetaire.systemTxDao;
 
 @Command("depcoin")
@@ -28,8 +28,8 @@ public class Depcoin {
 
     @Default
     public static void deposit(Player player, @AIntegerArgument int amount) {
-        User depositUser = playerDao.findByNickname(player);
-        if (depositUser.getCard() == null) {
+        EcoUser depositEcoUser = ecoPlayerDao.findByNickname(player);
+        if (depositEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");
@@ -44,20 +44,20 @@ public class Depcoin {
             if (player.getInventory().containsAtLeast(itemStack, amount)) {
                 itemStack.setAmount(amount);
                 player.getInventory().removeItemAnySlot(itemStack);
-                depositUser.getCard().setCoins((depositUser.getCard().getCoins() + itemStack.getAmount()));
-                playerDao.save(depositUser);
+                depositEcoUser.getCard().setCoins((depositEcoUser.getCard().getCoins() + itemStack.getAmount()));
+                ecoPlayerDao.save(depositEcoUser);
                 SystemTx systemTx = new SystemTx();
                 systemTx.setActionType(ActionType.DEPCOIN);
-                systemTx.setSender(depositUser.getNickname());
+                systemTx.setSender(depositEcoUser.getNickname());
                 systemTx.setAmount(itemStack.getAmount());
                 systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
-                systemTx.setMomentBalance("MainCoins: " + depositUser.getCard().getCoins()
-                        + " | Credits: " + depositUser.getCard().getLoan() + " | Fines: " + depositUser.getCard().getFine());
+                systemTx.setMomentBalance("MainCoins: " + depositEcoUser.getCard().getCoins()
+                        + " | Credits: " + depositEcoUser.getCard().getLoan() + " | Fines: " + depositEcoUser.getCard().getFine());
                 systemTx.setSuccessful(true);
                 systemTxDao.save(systemTx);
                 ChatUtil.sendMessage(player,
                         "Успішне поповнення на <#55FFFF>" + itemStack.getAmount() + " AUR",
-                        "Ваш рахунок після операції: <#55FFFF>" + depositUser.getCard().getCoins() + " AUR"
+                        "Ваш рахунок після операції: <#55FFFF>" + depositEcoUser.getCard().getCoins() + " AUR"
                 );
             } else {
                 ChatUtil.sendMessage(player, "Не вдалося розпізнати відбиток AUR!" , "Переконайтесь, що у вашому інвентарі наявна", "вказана сума для поповнення рахунку");

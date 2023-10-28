@@ -45,7 +45,7 @@ public class Card {
     }
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private User holder;
+    private EcoUser holder;
 
     public String getNumber() {
         return number;
@@ -63,11 +63,11 @@ public class Card {
         this.cvv = cvv;
     }
 
-    public User getHolder() {
+    public EcoUser getHolder() {
         return holder;
     }
 
-    public void setHolder(User holder) {
+    public void setHolder(EcoUser holder) {
         this.holder = holder;
     }
 

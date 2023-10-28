@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.menu;
 
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.gui.bank.coins.items.CoinsVaultItem;
 import dev.ua.ikeepcalm.monetaire.gui.bank.diamonds.items.DiamondVaultItem;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.SettingsItem;
@@ -18,13 +18,13 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 public class VaultsGUI {
 
     public void openMenu(Player player) {
-        User depositUser = playerDao.findByNickname(player);
-        if (depositUser.getCard() == null) {
+        EcoUser depositEcoUser = ecoPlayerDao.findByNickname(player);
+        if (depositEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");

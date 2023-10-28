@@ -6,7 +6,7 @@ import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.ua.ikeepcalm.monetaire.entities.MinFin;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
@@ -24,32 +24,32 @@ public class Payfine {
 
     @Default
     public static void payfine(Player player) {
-        User finedUser = playerDao.findByNickname(player);
-        if (finedUser.getCard() == null) {
+        EcoUser finedEcoUser = ecoPlayerDao.findByNickname(player);
+        if (finedEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");
         } else {
-            if (finedUser.getCard().getFine() == 0){
+            if (finedEcoUser.getCard().getFine() == 0){
                 ChatUtil.sendMessage(player,
                         "Нічого виплачувати, у вас немає активних штрафів!");
             } else {
-                if (finedUser.getCard().getBalance()>=finedUser.getCard().getFine()){
-                    finedUser.getCard().setBalance(finedUser.getCard().getBalance()- finedUser.getCard().getFine());
-                    finedUser.getCard().setFine(0L);
+                if (finedEcoUser.getCard().getBalance()>= finedEcoUser.getCard().getFine()){
+                    finedEcoUser.getCard().setBalance(finedEcoUser.getCard().getBalance()- finedEcoUser.getCard().getFine());
+                    finedEcoUser.getCard().setFine(0L);
                     MinFin minFin = minfinDao.getMinfin();
-                    minFin.setBalance(minFin.getBalance()+ finedUser.getCard().getFine());
+                    minFin.setBalance(minFin.getBalance()+ finedEcoUser.getCard().getFine());
                     minfinDao.save(minFin);
                     SystemTx systemTx = new SystemTx();
                     systemTx.setActionType(ActionType.PAYFINE);
                     systemTx.setSuccessful(true);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
-                    systemTx.setAmount(Math.toIntExact(finedUser.getCard().getFine()));
-                    systemTx.setMomentBalance("MainBalance: " + finedUser.getCard().getBalance()
-                            + " | Credits: "+ finedUser.getCard().getLoan() +" | Fines: " + finedUser.getCard().getFine());
+                    systemTx.setAmount(Math.toIntExact(finedEcoUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + finedEcoUser.getCard().getBalance()
+                            + " | Credits: "+ finedEcoUser.getCard().getLoan() +" | Fines: " + finedEcoUser.getCard().getFine());
                     systemTxDao.save(systemTx);
-                    playerDao.save(finedUser);
+                    ecoPlayerDao.save(finedEcoUser);
                     ChatUtil.sendMessage(player,
                             "Ви успішно виплатили свій штраф!");
                 } else {
@@ -58,9 +58,9 @@ public class Payfine {
                     systemTx.setSuccessful(false);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
-                    systemTx.setAmount(Math.toIntExact(finedUser.getCard().getFine()));
-                    systemTx.setMomentBalance("MainBalance: " + finedUser.getCard().getBalance()
-                            + " | Credits: "+ finedUser.getCard().getLoan() +" | Fines: " + finedUser.getCard().getFine());
+                    systemTx.setAmount(Math.toIntExact(finedEcoUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + finedEcoUser.getCard().getBalance()
+                            + " | Credits: "+ finedEcoUser.getCard().getLoan() +" | Fines: " + finedEcoUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Недостатньо коштів на балансі!",

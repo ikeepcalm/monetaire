@@ -1,11 +1,11 @@
 package dev.ua.ikeepcalm.monetaire.commands.common;
 
 import dev.jorel.commandapi.annotations.*;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
 import org.bukkit.entity.Player;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 @Command("balance")
 @Alias({"myinfo"})
@@ -15,18 +15,18 @@ public class Balance {
 
     @Default
     public static void balance(Player player) {
-        User foundUser = playerDao.findByNickname(player);
-        if (foundUser.getCard() == null) {
+        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
+        if (foundEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");
         } else {
             ChatUtil.sendMessage(player,
                     "Інформація о рахунках:",
-                    "Аури: <#55FFFF>" + foundUser.getCard().getCoins() + " AUR",
-                    "Діри: <#55FFFF>" + foundUser.getCard().getBalance() + " ДР",
-                    "Дійсні борги: <#55FFFF>" + foundUser.getCard().getLoan() + " ДР",
-                    "Дійсні штрафи: <#55FFFF>" + foundUser.getCard().getFine() + " ДР"
+                    "Аури: <#55FFFF>" + foundEcoUser.getCard().getCoins() + " AUR",
+                    "Діри: <#55FFFF>" + foundEcoUser.getCard().getBalance() + " ДР",
+                    "Дійсні борги: <#55FFFF>" + foundEcoUser.getCard().getLoan() + " ДР",
+                    "Дійсні штрафи: <#55FFFF>" + foundEcoUser.getCard().getFine() + " ДР"
             );
         }
     }

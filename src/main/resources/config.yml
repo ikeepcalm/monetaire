@@ -4,11 +4,17 @@
 # Made by ikeepcalm for UAPROJECT
 # -----------------------------
 
-# Things related to Data Storage
+# Things related to Economy Data Storage
 # For now only DataBase (MariaDB)
-db_url:
-db_user:
-db_password:
+eco_db_url:
+eco_db_user:
+eco_db_password:
+
+# Things related to Reverence Data Storage
+# For now only DataBase (MariaDB)
+rep_db_url:
+rep_db_user:
+rep_db_password:
 
 # Prices for the Phantom Shop items
 # Different values, in range of int max and min values

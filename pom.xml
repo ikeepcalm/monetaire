@@ -6,7 +6,7 @@
 
     <groupId>dev.ua.ikeepcalm</groupId>
     <artifactId>Monetaire</artifactId>
-    <version>1.9</version>
+    <version>1.9.1</version>
     <packaging>jar</packaging>
 
     <name>Monetaire</name>
@@ -107,6 +107,11 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.2.0</version>
         </dependency>
         <dependency>
             <groupId>dev.jorel</groupId>

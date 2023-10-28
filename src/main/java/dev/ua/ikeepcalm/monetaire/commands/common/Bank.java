@@ -5,7 +5,7 @@ import dev.jorel.commandapi.annotations.Command;
 import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.BalanceItem;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.SettingsItem;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.VaultItem;
@@ -22,7 +22,7 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 @Command("bank")
 @Permission("monetaire.gui")
@@ -31,8 +31,8 @@ public class Bank {
 
     @Default
     public static void openMenu(Player player) {
-        User depositUser = playerDao.findByNickname(player);
-        if (depositUser.getCard() == null) {
+        EcoUser depositEcoUser = ecoPlayerDao.findByNickname(player);
+        if (depositEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");

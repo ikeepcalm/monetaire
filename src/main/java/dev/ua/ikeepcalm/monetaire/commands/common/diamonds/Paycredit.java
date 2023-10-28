@@ -6,7 +6,7 @@ import dev.jorel.commandapi.annotations.Default;
 import dev.jorel.commandapi.annotations.Help;
 import dev.jorel.commandapi.annotations.Permission;
 import dev.ua.ikeepcalm.monetaire.entities.MinFin;
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.SystemTx;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 import dev.ua.ikeepcalm.monetaire.utils.ChatUtil;
@@ -24,32 +24,32 @@ public class Paycredit {
 
     @Default
     public static void paycredit(Player player) {
-        User creditedUser = playerDao.findByNickname(player);
-        if (creditedUser.getCard() == null) {
+        EcoUser creditedEcoUser = ecoPlayerDao.findByNickname(player);
+        if (creditedEcoUser.getCard() == null) {
             ChatUtil.sendMessage(player,
                     "У вас немає картки!",
                     "Спочатку виконайте ➜ /card");
         } else {
-            if (creditedUser.getCard().getLoan() == 0){
+            if (creditedEcoUser.getCard().getLoan() == 0){
                 ChatUtil.sendMessage(player,
                         "Нічого виплачувати, у вас немає заборгованності!");
             } else {
-                if (creditedUser.getCard().getBalance()>=creditedUser.getCard().getLoan()){
+                if (creditedEcoUser.getCard().getBalance()>= creditedEcoUser.getCard().getLoan()){
                     MinFin minFin = minfinDao.getMinfin();
-                    minFin.setBalance(minFin.getBalance() + creditedUser.getCard().getLoan());
-                    minFin.setWaitCredits(minFin.getWaitCredits() - creditedUser.getCard().getLoan());
-                    creditedUser.getCard().setBalance(creditedUser.getCard().getBalance() - creditedUser.getCard().getLoan());
-                    creditedUser.getCard().setLoan(0L);
+                    minFin.setBalance(minFin.getBalance() + creditedEcoUser.getCard().getLoan());
+                    minFin.setWaitCredits(minFin.getWaitCredits() - creditedEcoUser.getCard().getLoan());
+                    creditedEcoUser.getCard().setBalance(creditedEcoUser.getCard().getBalance() - creditedEcoUser.getCard().getLoan());
+                    creditedEcoUser.getCard().setLoan(0L);
                     minfinDao.save(minFin);
-                    playerDao.save(creditedUser);
+                    ecoPlayerDao.save(creditedEcoUser);
                     SystemTx systemTx = new SystemTx();
                     systemTx.setActionType(ActionType.PAYCREDIT);
                     systemTx.setSuccessful(true);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
-                    systemTx.setAmount(Math.toIntExact(creditedUser.getCard().getFine()));
-                    systemTx.setMomentBalance("MainBalance: " + creditedUser.getCard().getBalance()
-                            + " | Credits: "+ creditedUser.getCard().getLoan() +" | Fines: " + creditedUser.getCard().getFine());
+                    systemTx.setAmount(Math.toIntExact(creditedEcoUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + creditedEcoUser.getCard().getBalance()
+                            + " | Credits: "+ creditedEcoUser.getCard().getLoan() +" | Fines: " + creditedEcoUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Ви успішно позбулися своєї заборгованності!");
@@ -59,9 +59,9 @@ public class Paycredit {
                     systemTx.setSuccessful(false);
                     systemTx.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm"))));
                     systemTx.setSender(player.getName());
-                    systemTx.setAmount(Math.toIntExact(creditedUser.getCard().getFine()));
-                    systemTx.setMomentBalance("MainBalance: " + creditedUser.getCard().getBalance()
-                            + " | Credits: "+ creditedUser.getCard().getLoan() +" | Fines: " + creditedUser.getCard().getFine());
+                    systemTx.setAmount(Math.toIntExact(creditedEcoUser.getCard().getFine()));
+                    systemTx.setMomentBalance("MainBalance: " + creditedEcoUser.getCard().getBalance()
+                            + " | Credits: "+ creditedEcoUser.getCard().getLoan() +" | Fines: " + creditedEcoUser.getCard().getFine());
                     systemTxDao.save(systemTx);
                     ChatUtil.sendMessage(player,
                             "Недостатньо коштів на балансі!",

@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.listeners;
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 public class BlockListener implements Listener {
 
@@ -26,14 +26,14 @@ public class BlockListener implements Listener {
                 ItemStack item = player.getInventory().getItemInMainHand();
                 if (item.getType() == Material.DIAMOND_PICKAXE || item.getType() == Material.NETHERITE_PICKAXE) {
                     if (item.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                        User foundUser = playerDao.findByNickname(player);
-                        if (foundUser.getAutoDeposit()) {
-                            if (foundUser.getCard().getBalance() >= 1344){
+                        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
+                        if (foundEcoUser.getAutoDeposit()) {
+                            if (foundEcoUser.getCard().getBalance() >= 1344){
                                 TextComponent noFreeSpace = Component.text("Недостатньо місця в сховищі! Звільніть місце, або отримайте збільшений ліміт").color(TextColor.color(140, 200, 230));
                                 player.sendMessage(noFreeSpace);
                             } else {
-                                foundUser.getCard().setBalance(foundUser.getCard().getBalance() + 1);
-                                playerDao.save(foundUser);
+                                foundEcoUser.getCard().setBalance(foundEcoUser.getCard().getBalance() + 1);
+                                ecoPlayerDao.save(foundEcoUser);
                                 event.setDropItems(false);
                             }
                         }

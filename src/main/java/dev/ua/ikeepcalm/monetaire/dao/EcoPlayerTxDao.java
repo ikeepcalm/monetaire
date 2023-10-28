@@ -3,28 +3,28 @@ package dev.ua.ikeepcalm.monetaire.dao;
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import dev.ua.ikeepcalm.monetaire.entities.transactions.PlayerTx;
+import dev.ua.ikeepcalm.monetaire.entities.transactions.EcoPlayerTx;
 
 import java.sql.SQLException;
 
-public class PlayerTxDao extends BaseDaoImpl<PlayerTx, Long> {
+public class EcoPlayerTxDao extends BaseDaoImpl<EcoPlayerTx, Long> {
 
-    public PlayerTxDao(ConnectionSource connectionSource) throws SQLException {
-        super(connectionSource, PlayerTx.class);
+    public EcoPlayerTxDao(ConnectionSource connectionSource) throws SQLException {
+        super(connectionSource, EcoPlayerTx.class);
     }
 
     private void init() {
         try {
-            TableUtils.createTableIfNotExists(connectionSource, PlayerTx.class);
+            TableUtils.createTableIfNotExists(connectionSource, EcoPlayerTx.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void save(PlayerTx playerTx){
+    public void save(EcoPlayerTx ecoPlayerTx){
         init();
         try {
-            create(playerTx);
+            create(ecoPlayerTx);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

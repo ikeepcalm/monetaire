@@ -1,7 +1,7 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.menu;
 
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.items.AutoDepositItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -16,17 +16,17 @@ import xyz.xenondevs.invui.item.impl.CommandItem;
 import xyz.xenondevs.invui.item.impl.SimpleItem;
 import xyz.xenondevs.invui.window.Window;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 public class SettingsGUI {
 
     public void openSettings(Player player) {
-        User foundUser = playerDao.findByNickname(player);
+        EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
         TextComponent windowComponent = Component.text("Налаштування").color(TextColor.color(255, 8, 131));
         TextComponent comingSoonComponent = Component.text("Скоро...").color(TextColor.color(255, 8, 131));
         TextComponent backComponent = Component.text("Назад").color(TextColor.color(8, 255, 131));
         Item border = new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE));
-        Item autodeposit = new AutoDepositItem(foundUser.getAutoDeposit());
+        Item autodeposit = new AutoDepositItem(foundEcoUser.getAutoDeposit());
         Item comingSoon = new SimpleItem(new ItemBuilder(Material.WHITE_DYE).setDisplayName(new AdventureComponentWrapper(comingSoonComponent)));
         Item filler = new SimpleItem(new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE));
         Item back = new CommandItem(new ItemBuilder(Material.NETHER_STAR).setDisplayName(new AdventureComponentWrapper(backComponent)), "/bank");

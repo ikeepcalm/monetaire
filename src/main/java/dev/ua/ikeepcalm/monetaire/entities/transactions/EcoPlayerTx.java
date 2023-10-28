@@ -3,11 +3,11 @@ package dev.ua.ikeepcalm.monetaire.entities.transactions;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import dev.ua.ikeepcalm.monetaire.dao.PlayerTxDao;
+import dev.ua.ikeepcalm.monetaire.dao.EcoPlayerTxDao;
 import dev.ua.ikeepcalm.monetaire.entities.transactions.source.ActionType;
 
-@DatabaseTable(tableName = "playertxs", daoClass = PlayerTxDao.class)
-public class PlayerTx {
+@DatabaseTable(tableName = "playertxs", daoClass = EcoPlayerTxDao.class)
+public class EcoPlayerTx {
 
     @DatabaseField(generatedId = true)
     private Long id;

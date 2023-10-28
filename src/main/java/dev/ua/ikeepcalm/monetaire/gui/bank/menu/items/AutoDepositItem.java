@@ -1,6 +1,6 @@
 package dev.ua.ikeepcalm.monetaire.gui.bank.menu.items;
 
-import dev.ua.ikeepcalm.monetaire.entities.User;
+import dev.ua.ikeepcalm.monetaire.entities.EcoUser;
 import dev.ua.ikeepcalm.monetaire.gui.bank.menu.SettingsGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -16,7 +16,7 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
 
-import static dev.ua.ikeepcalm.monetaire.Monetaire.playerDao;
+import static dev.ua.ikeepcalm.monetaire.Monetaire.ecoPlayerDao;
 
 public class AutoDepositItem extends AbstractItem {
 
@@ -51,9 +51,9 @@ public class AutoDepositItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         if (clickType.isRightClick() || clickType.isLeftClick()) {
             if (player.hasPermission("monetaire.autodeposit")){
-                User foundUser = playerDao.findByNickname(player);
-                foundUser.setAutoDeposit(!isEnabled);
-                playerDao.save(foundUser);
+                EcoUser foundEcoUser = ecoPlayerDao.findByNickname(player);
+                foundEcoUser.setAutoDeposit(!isEnabled);
+                ecoPlayerDao.save(foundEcoUser);
                 new SettingsGUI().openSettings(player);
             } else {
                 MiniMessage mm = MiniMessage.miniMessage();
